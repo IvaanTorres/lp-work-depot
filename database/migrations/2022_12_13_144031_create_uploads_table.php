@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('uploads', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('description');
+            $table->string('upload'); /* Change: It can be pdf, image, etc */
+            $table->string('link')->nullable();
             $table->timestamps();
         });
     }
