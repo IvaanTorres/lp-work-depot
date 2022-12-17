@@ -21,12 +21,14 @@ use Illuminate\Support\Facades\Route;
 Route::controller(UserController::class)->group(function () {
   /* Auth */
   Route::prefix('auth')->group(function () {
-    Route::get('/register', 'index')->name('register');
-    Route::get('/login', 'index')->name('login');
+    Route::get('/register', 'show_register')->name('register_page');
+    Route::post('/register', 'register')->name('register');
+    Route::get('/login', 'show_login')->name('login_page');
+    Route::post('/login', 'login')->name('login');
   });
 });
 /* -------------------------------- Dashboard ------------------------------- */
-Route::view('/dashboard', 'dashboard'/* , ['name' => 'Taylor'] */);
+Route::view('/dashboard', 'dashboard.index')->name('dashboard_page');
 
 /* ---------------------------------- Class --------------------------------- */
 Route::controller(ClassController::class)->group(function () {
@@ -51,7 +53,7 @@ Route::controller(LessonController::class)->group(function () {
   Route::get('/classes/{class_id}/lessons/{lesson_id}/edit', 'index')->name('lesson_modification_page');
   Route::put('/classes/{class_id}/lessons/{lesson_id}', 'index')->name('lesson_modification');
 
-  Route::deletion('/classes/{class_id}/lessons/{lesson_id}', 'index')->name('lesson_deletion');
+  Route::delete('/classes/{class_id}/lessons/{lesson_id}', 'index')->name('lesson_deletion');
 });
 
 /* -------------------------------- Projects -------------------------------- */
