@@ -37,7 +37,7 @@ Route::controller(UserController::class)->group(function () {
 
 /* ---------------------------------- Course --------------------------------- */
 Route::controller(CourseController::class)->group(function () {
-  Route::get('/courses', 'index')->name('course_list_page');
+  Route::get('/courses', 'index')->name('courses_list_page');
   Route::get('/courses/{course_id}', 'show')->name('course_details_page');
 
   Route::get('/courses/{course_id}/create', 'create')->name('course_creation_page');

@@ -8,9 +8,9 @@
   </form>
 
   @if (Auth::user()->hasRole('teacher'))
-    <a href="{{ route('course_list_page') }}">Dashboard Teacher</a>
+    <a href="{{ route('courses_list_page') }}">Dashboard Teacher</a>
   @elseif (Auth::user()->hasRole('student'))
-    <a href="{{ route('course_list_page') }}">Dashboard Student</a>
+    <a href="{{ route('courses_list_page') }}">Dashboard Student</a>
   @endif
 
   {{-- Courses --}}

@@ -17,8 +17,8 @@ class CourseFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->name,
-            'description' => $this->faker->text,
+            'title' => fake()->sentence(2),
+            'description' => fake()->text,
         ];
     }
 }

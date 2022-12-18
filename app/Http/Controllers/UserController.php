@@ -29,7 +29,7 @@ class UserController extends Controller
         /* Create and log the user in the application */
         Auth::login($user);
  
-        return redirect()->route('course_list_page');
+        return redirect()->route('courses_list_page');
     }
 
     public function show_login(){
@@ -45,16 +45,15 @@ class UserController extends Controller
         /* Find the user in the database to see if it exists */
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('course_list_page'))
+            return redirect()->intended(route('courses_list_page'))
                 ->with('username', Auth::user()->name);
         }else{
         }
-        dd(Auth::attempt($credentials));
  
-        // return back()->withErrors([
-        //     'email' => 'The provided credentials do not match our records.',
-        //     'password' => 'The provided credentials do not match our records.',
-        // ])->withInput();
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+            'password' => 'The provided credentials do not match our records.',
+        ])->withInput();
     }
 
     public function logout(Request $request){

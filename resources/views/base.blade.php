@@ -21,6 +21,8 @@
         </style>
     </head>
     <body class="antialiased">
+        @include('partials.navbar')
+        
         @section('content')
         @show
     </body>

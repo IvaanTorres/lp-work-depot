@@ -24,7 +24,9 @@ class CourseController extends Controller
 
         // Check if the user is enrolled in the course
         if(auth()->user()->courses->contains($course)){
-            return view('courses.show', compact('course'));
+            return view('courses.show', [
+                'course' => $course,
+            ]);
         }else{
             return back()->with('error', 'You are not enrolled in this course');
         }
