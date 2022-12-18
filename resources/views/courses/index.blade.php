@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-  <div x-data="{ open: true, input: '' }">
+  <div>
     <h1>Welcome</h1> {{-- Check --}}
     {{-- <button x-on:click="open = !open">Click</button>
     <span x-text="open"></span> --}}

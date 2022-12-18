@@ -1,15 +1,15 @@
-@section('alpine')
+{{-- @section('alpine')
     <script rel="text/javascript" src="/assets/js/components/Card.js"></script>
-@endsection
+@endsection --}}
 
 <div x-data="card">
     <p x-text="count"></p>
     <button x-on:click="increment">+</button>
 
-    <div>
+    {{-- <div>
         <input type="text" wire:model.lazy="name">
         <p>{{ $name }}</p>
-    </div>
+    </div> --}}
 </div>
 
 {{-- State --}}

@@ -6,13 +6,13 @@ use Livewire\Component;
 
 class Card extends Component
 {
-    public $count = 0;
-    public $name = 'John Doe';
+    // public $count = 0;
+    // public $name = 'John Doe';
 
-    public function increment()
-    {
-        $this->count++;
-    }
+    // public function increment()
+    // {
+    //     $this->count++;
+    // }
 
     public function render()
     {
