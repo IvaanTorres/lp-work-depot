@@ -38,14 +38,12 @@ Route::controller(UserController::class)->group(function () {
 /* ---------------------------------- Course --------------------------------- */
 Route::controller(CourseController::class)->group(function () {
   Route::get('/courses', 'index')->name('courses_list_page');
+  Route::get('/courses/create', 'create')->name('course_creation_page');
   Route::get('/courses/{course_id}', 'show')->name('course_details_page');
-
-  Route::get('/courses/{course_id}/create', 'create')->name('course_creation_page');
-  Route::post('/courses/{course_id}', 'store')->name('course_creation');
-
   Route::get('/courses/{course_id}/edit', 'edit')->name('course_modification_page');
-  Route::put('/courses/{course_id}', 'update')->name('course_modification');
 
+  Route::post('/courses', 'store')->name('course_creation');
+  Route::put('/courses/{course_id}', 'update')->name('course_modification');
   Route::delete('/courses/{course_id}', 'destroy')->name('course_deletion');
 });
 

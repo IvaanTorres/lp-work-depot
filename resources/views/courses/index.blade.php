@@ -1,5 +1,11 @@
 @extends('base')
 
+@section('title', 'Dashboard')
+
+@section('head')
+  {{-- Add custom CSS and JS --}}
+@endsection
+
 @section('content')
   <h1>Welcome {{Session::get('username')}}</h1> {{-- Check --}}
   <form action="{{route('logout')}}" method="post">

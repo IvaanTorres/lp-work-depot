@@ -31,4 +31,12 @@ class CourseController extends Controller
             return back()->with('error', 'You are not enrolled in this course');
         }
     }
+
+    public function create(){
+        return view('courses.create');
+    }
+
+    public function store($request){
+        dd('create');
+    }
 }
