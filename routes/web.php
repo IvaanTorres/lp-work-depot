@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -51,40 +52,41 @@ Route::controller(CourseController::class)->group(function () {
 /* --------------------------------- Lessons -------------------------------- */
 Route::controller(LessonController::class)->group(function () {
   /* Dont't think it is necessary */
-  // Route::get('/courses/{class_id}/lessons/{lesson_id}', 'index')->name('lesson_details_page');
-  Route::get('/courses/{class_id}/lessons/{lesson_id}/create', 'index')->name('lesson_creation_page');
-  Route::post('/courses/{class_id}/lessons/{lesson_id}', 'index')->name('lesson_creation');
+  Route::get('/courses/{course_id}/lessons/{lesson_id}', 'show')->name('lesson_details_page');
 
-  Route::get('/courses/{class_id}/lessons/{lesson_id}/edit', 'index')->name('lesson_modification_page');
-  Route::put('/courses/{class_id}/lessons/{lesson_id}', 'index')->name('lesson_modification');
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/create', 'create')->name('lesson_creation_page');
+  Route::post('/courses/{course_id}/lessons/{lesson_id}', 'store')->name('lesson_creation');
 
-  Route::delete('/courses/{class_id}/lessons/{lesson_id}', 'index')->name('lesson_deletion');
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/edit', 'edit')->name('lesson_modification_page');
+  Route::put('/courses/{course_id}/lessons/{lesson_id}', 'update')->name('lesson_modification');
+
+  Route::delete('/courses/{course_id}/lessons/{lesson_id}', 'destroy')->name('lesson_deletion');
 });
 
 /* -------------------------------- Projects -------------------------------- */
-Route::controller(LessonController::class)->group(function () {
-  Route::get('/courses/{class_id}/lessons/{lesson_id}/projects/{project_id}', 'index')->name('project_details_page'); /* List user uploads for teachers */
+Route::controller(ProjectController::class)->group(function () {
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}', 'index')->name('project_details_page'); /* List user uploads for teachers */
 
-  Route::get('/courses/{class_id}/lessons/{lesson_id}/projects/create', 'index')->name('project_creation_page');
-  Route::post('/courses/{class_id}/lessons/{lesson_id}/projects', 'index')->name('project_creation_page');
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/create', 'index')->name('project_creation_page');
+  Route::post('/courses/{course_id}/lessons/{lesson_id}/projects', 'index')->name('project_creation_page');
 
-  Route::get('/courses/{class_id}/lessons/{lesson_id}/projects/edit', 'index')->name('project_modification_page');
-  Route::put('/courses/{class_id}/lessons/{lesson_id}/projects', 'index')->name('project_modification_page');
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/edit', 'index')->name('project_modification_page');
+  Route::put('/courses/{course_id}/lessons/{lesson_id}/projects', 'index')->name('project_modification_page');
 
-  Route::delete('/courses/{class_id}/lessons/{lesson_id}/projects', 'index')->name('project_deletion');
+  Route::delete('/courses/{course_id}/lessons/{lesson_id}/projects', 'index')->name('project_deletion');
 });
 
 /* ------------------------------ User Uploads ------------------------------ */
 Route::controller(UploadController::class)->group(function () {
-  Route::get('/courses/{class_id}/lessons/{lesson_id}/projects/{project_id}/uploads/{uploads_id}', 'index')->name('upload_details_page');
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/{uploads_id}', 'index')->name('upload_details_page');
 
-  Route::get('/courses/{class_id}/lessons/{lesson_id}/projects/{project_id}/uploads/create', 'index')->name('upload_creation_page');
-  Route::post('/courses/{class_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_creation_page');
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/create', 'index')->name('upload_creation_page');
+  Route::post('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_creation_page');
 
-  Route::get('/courses/{class_id}/lessons/{lesson_id}/projects/{project_id}/uploads/edit', 'index')->name('upload_modification_page');
-  Route::put('/courses/{class_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_modification_page');
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/edit', 'index')->name('upload_modification_page');
+  Route::put('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_modification_page');
 
-  Route::delete('/courses/{class_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_modification_page');
+  Route::delete('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_modification_page');
 });
 
 /* -------------------------------- 404 Error ------------------------------- */

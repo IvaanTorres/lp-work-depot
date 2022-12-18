@@ -18,4 +18,15 @@ class CourseController extends Controller
         $courses = auth()->user()->courses;
         return view('courses.index', compact('courses'));
     }
+
+    public function show($course_id){
+        $course = Course::find($course_id);
+
+        // Check if the user is enrolled in the course
+        if(auth()->user()->courses->contains($course)){
+            return view('courses.show', compact('course'));
+        }else{
+            return back()->with('error', 'You are not enrolled in this course');
+        }
+    }
 }

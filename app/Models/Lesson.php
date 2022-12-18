@@ -11,10 +11,10 @@ class Lesson extends Model
 {
     use HasFactory;
 
-    // /* M-1 */
-    // public function course(): BelongsTo {
-    //     return $this->belongsTo(Course::class);
-    // }
+    /* M-1 */
+    public function course(): BelongsTo {
+        return $this->belongsTo(Course::class);
+    }
 
     // /* 1-M */
     // public function projects(): HasMany {

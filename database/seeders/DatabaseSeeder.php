@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             CourseSeeder::class,
+            LessonSeeder::class,
         ]);
 
         // Get all the roles attaching up to 3 random roles to each user

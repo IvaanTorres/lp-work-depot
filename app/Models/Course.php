@@ -16,8 +16,8 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'user_course');
     }
 
-    // /* 1-M */
-    // public function lessons(): HasMany {
-    //     return $this->hasMany(Lesson::class);
-    // }
+    /* 1-M */
+    public function lessons(): HasMany {
+        return $this->hasMany(Lesson::class);
+    }
 }

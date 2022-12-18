@@ -18,7 +18,9 @@
   <ul>
     @foreach ($courses as $course)
       <li>
-        <p>{{$course->title}}</p>
+        <a href="{{ route('course_details_page', ['course_id' => $course->id]) }}">
+          {{ $course->title }}
+        </a>
       </li>
     @endforeach
   </ul>
