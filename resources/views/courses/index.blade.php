@@ -7,27 +7,34 @@
 @endsection
 
 @section('content')
-  <h1>Welcome {{Session::get('username')}}</h1> {{-- Check --}}
-  <form action="{{route('logout')}}" method="post">
-    @csrf
-    <button type="submit">Logout</button>
-  </form>
+  <div x-data="{ open: true, input: '' }">
+    <h1>Welcome</h1> {{-- Check --}}
+    {{-- <button x-on:click="open = !open">Click</button>
+    <span x-text="open"></span> --}}
 
-  @if (Auth::user()->hasRole(App\Enums\Roles::Teacher->value))
-    <a href="{{ route('courses_list_page') }}">Dashboard Teacher</a>
-  @elseif (Auth::user()->hasRole(App\Enums\Roles::Student->value))
-    <a href="{{ route('courses_list_page') }}">Dashboard Student</a>
-  @endif
+    <livewire:card>
 
-  {{-- Courses --}}
-  <h2>Courses</h2>
-  <ul>
-    @foreach ($courses as $course)
-      <li>
-        <a href="{{ route('course_details_page', ['course_id' => $course->id]) }}">
-          {{ $course->title }}
-        </a>
-      </li>
-    @endforeach
-  </ul>
+    <form action="{{route('logout')}}" method="post">
+      @csrf
+      <button type="submit">Logout</button>
+    </form>
+    
+    @if (Auth::user()->hasRole(App\Enums\Roles::Teacher->value))
+      <a href="{{ route('courses_list_page') }}">Dashboard Teacher</a>
+    @elseif (Auth::user()->hasRole(App\Enums\Roles::Student->value))
+      <a href="{{ route('courses_list_page') }}">Dashboard Student</a>
+    @endif
+    
+    {{-- Courses --}}
+    <h2>Courses</h2>
+    <ul>
+      @foreach ($courses as $course)
+        <li>
+          <a href="{{ route('course_details_page', ['course_id' => $course->id]) }}">
+            {{ $course->title }}
+          </a>
+        </li>
+      @endforeach
+    </ul>
+  </div>
 @endsection
