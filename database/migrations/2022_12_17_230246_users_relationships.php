@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lessons', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('description');
-            // $table->foreignId('course_id')->constrained('courses');
-            $table->timestamps();
-        });
+        if (Schema::hasTable('roles')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            });
+        }
     }
 
     /**
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lessons');
+        //
     }
 };

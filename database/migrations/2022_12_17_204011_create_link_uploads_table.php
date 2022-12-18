@@ -13,14 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('uploads', function (Blueprint $table) {
+        Schema::create('link_uploads', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('description');
-            /* $table->string('upload'); // Change: It can be pdf, image, etc 
-            $table->string('link')->nullable(); */
-            $table->string('upload_type')->nullable();
-            $table->unsignedInteger('upload_id')->nullable();
+            $table->string('link')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uploads');
+        Schema::dropIfExists('link_uploads');
     }
 };

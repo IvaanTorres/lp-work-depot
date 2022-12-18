@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->string('upload'); /* Change to blob: It can be pdf, image, etc */
+            // $table->foreignId('lesson_id')->constrained('lessons');
             $table->timestamps();
         });
     }
