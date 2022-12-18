@@ -14,6 +14,19 @@
         ]) }}">
           {{ $lesson->title }}
         </a>
+        <ul>
+          @foreach ($lesson->projects as $project)
+            <li>
+              <a href="{{ route('project_details_page', [
+                'course_id' => $course->id,
+                'lesson_id' => $lesson->id,
+                'project_id' => $project->id
+              ]) }}">
+                {{ $project->title }}
+              </a>
+            </li>
+          @endforeach
+        </ul>
       </li>
     @endforeach
   </ul>

@@ -12,10 +12,10 @@ class Project extends Model
 {
     use HasFactory;
 
-    // /* M-1 */
-    // public function lesson(): BelongsTo {
-    //     return $this->belongsTo(Lesson::class);
-    // }
+    /* M-1 */
+    public function lesson(): BelongsTo {
+        return $this->belongsTo(Lesson::class, 'lesson_id');
+    }
 
     // /* 1-M */
     // public function uploads(): HasMany {

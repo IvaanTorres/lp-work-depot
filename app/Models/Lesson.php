@@ -13,11 +13,11 @@ class Lesson extends Model
 
     /* M-1 */
     public function course(): BelongsTo {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id');
     }
 
-    // /* 1-M */
-    // public function projects(): HasMany {
-    //     return $this->hasMany(Project::class);
-    // }
+    /* 1-M */
+    public function projects(): HasMany {
+        return $this->hasMany(Project::class, 'lesson_id');
+    }
 }

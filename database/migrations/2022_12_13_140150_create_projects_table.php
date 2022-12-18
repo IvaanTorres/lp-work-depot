@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            // $table->foreignId('lesson_id')->constrained('lessons');
             $table->timestamps();
         });
     }
