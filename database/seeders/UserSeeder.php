@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Roles;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,6 +16,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(2)->create();
+        User::factory()->count(2)->sequence(
+            ['role_id' => Roles::Student->getId()],
+            ['role_id' => Roles::Teacher->getId()]
+        )->create();
     }
 }

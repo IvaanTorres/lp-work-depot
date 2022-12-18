@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Roles;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -20,7 +21,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'role_id' => 1,
+            'role_id' => Roles::Student->getId(),
             'email_verified_at' => now(),
             'password' => bcrypt('root'), // password
             'remember_token' => Str::random(10),

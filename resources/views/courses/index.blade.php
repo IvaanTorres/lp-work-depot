@@ -7,9 +7,9 @@
     <button type="submit">Logout</button>
   </form>
 
-  @if (Auth::user()->hasRole('teacher'))
+  @if (Auth::user()->hasRole(App\Enums\Roles::Teacher->value))
     <a href="{{ route('courses_list_page') }}">Dashboard Teacher</a>
-  @elseif (Auth::user()->hasRole('student'))
+  @elseif (Auth::user()->hasRole(App\Enums\Roles::Student->value))
     <a href="{{ route('courses_list_page') }}">Dashboard Student</a>
   @endif
 
