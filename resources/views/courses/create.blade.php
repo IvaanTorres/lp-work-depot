@@ -34,8 +34,12 @@
 
   function createNewLesson(){
     const lessonContainer = document.createElement('div');
+    lessonContainer.classList.add('lesson-container');
     // [] is used to make Laravel understand that this is an array
     const lessonTemplate = `
+      <div>
+        <div class="lesson-delete-button">Delete lesson</div>
+      </div>
       <div>
         <label for="lesson-title[]">Lesson Title</label>
         <input type="text" name="lesson-title[]" id="lesson-title">
@@ -46,6 +50,12 @@
       </div>
     `;
     lessonContainer.innerHTML = lessonTemplate;
+
+    // Add event listener to delete button
+    const lessonDeleteButton = lessonContainer.getElementsByClassName('lesson-delete-button')[0];
+    lessonDeleteButton.addEventListener('click', () => {
+      lessonContainer.remove();
+    });
 
     lessonFieldsContainer.appendChild(lessonContainer);
   }

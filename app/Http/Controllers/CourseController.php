@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Termwind\Components\Dd;
 
 class CourseController extends Controller
 {
@@ -73,10 +74,19 @@ class CourseController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
+            'lesson-title' => 'required',
+            'lesson-description' => 'required',
         ]);
 
         $course = Course::find($course_id);
         $course->update($request->all());
+        $course->lessons()->delete();
+        foreach(array_filter($request->input('lesson-title')) as $key => $value){
+            $course->lessons()->create([
+                'title' => $value,
+                'description' => $request->input('lesson-description')[$key],
+            ]);
+        }
 
         return redirect()->route('course_details_page', $course->id)->with('success', 'Course updated successfully');
     }
