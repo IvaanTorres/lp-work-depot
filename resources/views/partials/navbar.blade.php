@@ -11,7 +11,7 @@
       {{-- Teacher create actions --}}
       @if(auth()->user()->hasRole(App\Enums\Roles::Teacher->value))
         @if(isRouteActive('courses_list_page'))
-          <li><a href="{{ route('courses_list_page') }}">Create new course</a></li>
+          <li><a href="{{ route('course_creation_page') }}">Create new course</a></li>
         @elseif(isRouteActive('course_details_page'))
           <li><a href="{{ route('courses_list_page') }}">Create new lesson</a></li>
           <li><a href="{{ route('courses_list_page') }}">Create new project</a></li>
