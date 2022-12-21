@@ -13,9 +13,9 @@
 </div>
 
 {{-- State --}}
-<script>
+{{-- <script>
     document.addEventListener('alpine:init', function () {
-        Alpine.data('card', () => ({
+        Alpine.component('card', () => ({
             count: 0,
 
             increment() {
@@ -23,4 +23,4 @@
             }
         }))
     })
-</script>
+</script> --}}

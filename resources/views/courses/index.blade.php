@@ -12,7 +12,7 @@
     {{-- <button x-on:click="open = !open">Click</button>
     <span x-text="open"></span> --}}
 
-    <livewire:card>
+    <x-card>
 
     <form action="{{route('logout')}}" method="post">
       @csrf

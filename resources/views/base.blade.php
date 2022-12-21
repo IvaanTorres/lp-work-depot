@@ -25,5 +25,16 @@
 
         @yield('content')
         @livewireScripts
+        <script>
+            document.addEventListener('alpine:init', function () {
+                Alpine.component('card', () => ({
+                    count: 0,
+        
+                    increment() {
+                        this.count++
+                    }
+                }))
+            })
+        </script>
     </body>
 </html>
