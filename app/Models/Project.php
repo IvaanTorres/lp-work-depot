@@ -12,6 +12,11 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+    ];
+
     /* M-1 */
     public function lesson(): BelongsTo {
         return $this->belongsTo(Lesson::class, 'lesson_id');

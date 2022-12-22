@@ -50,14 +50,12 @@ Route::controller(CourseController::class)->group(function () {
 /* --------------------------------- Lessons -------------------------------- */
 Route::controller(LessonController::class)->group(function () {
   /* Dont't think it is necessary */
-  Route::get('/courses/{course_id}/lessons/{lesson_id}', 'show')->name('lesson_details_page');
-
-  Route::get('/courses/{course_id}/lessons/{lesson_id}/create', 'create')->name('lesson_creation_page');
-  Route::post('/courses/{course_id}/lessons/{lesson_id}', 'store')->name('lesson_creation');
-
+  // Route::get('/courses/{course_id}/lessons/{lesson_id}', 'show')->name('lesson_details_page');
+  Route::get('/courses/{course_id}/lessons/create', 'create')->name('lesson_creation_page');
   Route::get('/courses/{course_id}/lessons/{lesson_id}/edit', 'edit')->name('lesson_modification_page');
-  Route::put('/courses/{course_id}/lessons/{lesson_id}', 'update')->name('lesson_modification');
 
+  Route::post('/courses/{course_id}/lessons', 'store')->name('lesson_creation');
+  Route::put('/courses/{course_id}/lessons/{lesson_id}', 'update')->name('lesson_modification');
   Route::delete('/courses/{course_id}/lessons/{lesson_id}', 'destroy')->name('lesson_deletion');
 });
 

@@ -13,8 +13,8 @@
         @if(isRouteActive('courses_list_page'))
           <li><a href="{{ route('course_creation_page') }}">Create new course</a></li>
         @elseif(isRouteActive('course_details_page'))
-          <li><a href="{{ route('courses_list_page') }}">Create new lesson</a></li>
-          <li><a href="{{ route('courses_list_page') }}">Create new project</a></li>
+          <li><a href="{{ route('lesson_creation_page', ['course_id' => $course->id]) }}">Create new lesson</a></li>
+          {{-- <li><a href="{{ route('courses_list_page') }}">Create new project</a></li> --}}
         @endif
       @endif
     @else

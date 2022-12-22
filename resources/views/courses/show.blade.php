@@ -16,12 +16,25 @@
   <ul>
     @foreach ($course->lessons as $lesson)
       <li>
-        <a href="{{ route('lesson_details_page', [
-          'course_id' => $course->id,
-          'lesson_id' => $lesson->id
-        ]) }}">
+        <div>
           {{ $lesson->title }}
-        </a>
+          <form action="{{route('lesson_deletion', [
+            'course_id' => $course->id,
+            'lesson_id' => $lesson->id
+          ])}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <input type="hidden" name="lesson_id" value="{{ $lesson->id }}">
+            <button type="submit">Delete</button>
+          </form>
+          <a href="{{ route('lesson_modification_page', [
+            'course_id' => $course->id,
+            'lesson_id' => $lesson->id
+          ]) }}">Edit</a>
+          <a href="{{ route('lesson_creation_page', [
+            'course_id' => $course->id,
+          ]) }}">Create Project</a>
+        </div>
         <ul>
           @foreach ($lesson->projects as $project)
             <li>
