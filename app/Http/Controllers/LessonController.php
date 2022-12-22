@@ -26,15 +26,19 @@ class LessonController extends Controller
             'description' => 'required',
         ]);
         
-        $course = Course::find($course_id);
-        $lesson = $course->lessons()->create($request->all());
+        $lesson = new Lesson();
+        $lesson->title = $request->title;
+        $lesson->description = $request->description;
+        $lesson->course()->associate($course_id);
+        $lesson->save();
+
         foreach(array_filter($request->input('project-title')) as $key => $value){
             $lesson->projects()->create([
                 'title' => $value,
                 'description' => $request->input('project-description')[$key],
             ]);
         }
-        return redirect()->route('course_details_page', $course->id)->with('success', 'Lesson created successfully');
+        return redirect()->route('course_details_page', $course_id)->with('success', 'Lesson created successfully');
     }
 
     public function edit($course_id, $lesson_id){

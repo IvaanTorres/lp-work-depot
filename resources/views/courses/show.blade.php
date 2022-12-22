@@ -31,8 +31,9 @@
             'course_id' => $course->id,
             'lesson_id' => $lesson->id
           ]) }}">Edit</a>
-          <a href="{{ route('lesson_creation_page', [
+          <a href="{{ route('project_creation_page', [
             'course_id' => $course->id,
+            'lesson_id' => $lesson->id
           ]) }}">Create Project</a>
         </div>
         <ul>
@@ -45,6 +46,21 @@
               ]) }}">
                 {{ $project->title }}
               </a>
+              <a href="{{ route('project_modification_page', [
+                'course_id' => $course->id,
+                'lesson_id' => $lesson->id,
+                'project_id' => $project->id
+              ]) }}">Edit</a>
+              <form action="{{ route('project_deletion', [
+                'course_id' => $course->id,
+                'lesson_id' => $lesson->id,
+                'project_id' => $project->id
+              ]) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="project_id" value="{{ $project->id }}">
+                <button type="submit">Delete</button>
+              </form>
             </li>
           @endforeach
         </ul>
