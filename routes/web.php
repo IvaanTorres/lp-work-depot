@@ -41,12 +41,14 @@ Route::controller(CourseController::class)->group(function () {
   Route::get('/courses/create', 'create')->name('course_creation_page');
   Route::get('/courses/{course_id}/edit', 'edit')->name('course_modification_page');
   Route::get('/courses/{course_id}', 'show')->name('course_details_page');
-  Route::get('/courses/{course_id}/users', 'getUsers')->name('course_users_page');
-  // Route::get('/courses/{course_id}/link-users', 'index')->name('course_users_linking');
 
   Route::post('/courses', 'store')->name('course_creation');
   Route::put('/courses/{course_id}', 'update')->name('course_modification');
   Route::delete('/courses/{course_id}', 'destroy')->name('course_deletion');
+
+  Route::get('/courses/{course_id}/users', 'getUsers')->name('course_users_page');
+  Route::post('/courses/{course_id}/users', 'linkUser')->name('course_link_users');
+  Route::put('/courses/{course_id}/users/{user_id}', 'unlinkUser')->name('course_unlink_users');
 });
 
 /* --------------------------------- Lessons -------------------------------- */

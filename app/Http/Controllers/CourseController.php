@@ -24,6 +24,26 @@ class CourseController extends Controller
         ]);
     }
 
+    public function linkUser(Request $request, $course_id){
+        $request->validate([
+            'user_email' => 'required',
+        ]);
+
+        $course = Course::findOrFail($course_id);
+        $user = User::where('email', $request->input('user_email'))->first();
+        $course->users()->attach($user);
+
+        return redirect()->route('course_users_page', $course_id)->with('success', 'User linked successfully');
+    }
+
+    public function unlinkUser($course_id, $user_id){
+        $course = Course::findOrFail($course_id);
+        $user = User::findOrFail($user_id);
+        $course->users()->detach($user);
+
+        return redirect()->route('course_users_page', $course_id)->with('success', 'User unlinked successfully');
+    }
+
     /* ---------------------------------- CRUD ---------------------------------- */
 
     public function index(){
