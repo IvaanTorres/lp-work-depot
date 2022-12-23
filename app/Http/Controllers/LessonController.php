@@ -57,6 +57,13 @@ class LessonController extends Controller
 
         $lesson = Lesson::find($lesson_id);
         $lesson->update($request->all());
+        $lesson->projects()->delete();
+        foreach(array_filter($request->input('project-title')) as $key => $value){
+            $lesson->projects()->create([
+                'title' => $value,
+                'description' => $request->input('project-description')[$key],
+            ]);
+        }
         return redirect()->route('course_details_page', $lesson->course->id)->with('success', 'Lesson updated successfully');
     }
 

@@ -12,7 +12,7 @@
     <label for="description">Description</label>
     <textarea name="description" id="description" cols="30" rows="10">{{ $course->description }}</textarea>
   </div>
-  {{-- <div style="background: lightblue">
+  <div style="background: lightblue">
     <div id="lesson-create-button">Add lesson</div>
     <div id="lesson-field">
       @foreach ($course->lessons as $lesson)
@@ -31,13 +31,13 @@
         </div>
       @endforeach
     </div>
-  </div> --}}
+  </div>
   <div>
     <button type="submit">Create</button>
   </div>
 </form>
 
-{{-- <script>
+<script>
   const lessonCreateButton = document.getElementById('lesson-create-button');
   const lessonFieldsContainer = document.getElementById('lesson-field');
   const lessonContainers = document.getElementsByClassName('lesson-container');
@@ -85,5 +85,5 @@
 
   // Add event listener to create lesson button
   lessonCreateButton.addEventListener('click', createNewLesson);
-</script> --}}
+</script>
 @endsection
