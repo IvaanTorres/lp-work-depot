@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Roles;
 use App\Models\Lesson;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -14,12 +16,26 @@ class ProjectController extends Controller
         // $this->middleware('role:teacher');
     }
 
+    public function getUsers($course_id, $lesson_id, $project_id){
+        $students = User::getUsersOfCourse($course_id, Roles::Student)->get();
+        return view('projects.users', [
+            'course_id' => $course_id,
+            'lesson_id' => $lesson_id,
+            'project_id' => $project_id,
+            'students' => $students,
+        ]);
+    }
+
+    /* ---------------------------------- CRUD ---------------------------------- */
+
     public function show($course_id, $lesson_id, $project_id){
         $project = Project::findOrFail($project_id);
 
         // Check if the user is enrolled in the course
         if(auth()->user()->courses->contains($project->lesson->course)){
             return view('projects.show', [
+                'course_id' => $course_id,
+                'lesson_id' => $lesson_id,
                 'project' => $project,
             ]);
         }else{

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Roles;
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Termwind\Components\Dd;
 
@@ -13,6 +15,16 @@ class CourseController extends Controller
         $this->middleware('auth');
         // $this->middleware('role:teacher');
     }
+
+    public function getUsers($course_id){
+        $students = User::getUsersOfCourse($course_id, Roles::Student)->get();
+        return view('courses.users', [
+            'course_id' => $course_id,
+            'students' => $students,
+        ]);
+    }
+
+    /* ---------------------------------- CRUD ---------------------------------- */
 
     public function index(){
         // Fetch all courses which are linked to the user from the database

@@ -41,6 +41,8 @@ Route::controller(CourseController::class)->group(function () {
   Route::get('/courses/create', 'create')->name('course_creation_page');
   Route::get('/courses/{course_id}/edit', 'edit')->name('course_modification_page');
   Route::get('/courses/{course_id}', 'show')->name('course_details_page');
+  Route::get('/courses/{course_id}/users', 'getUsers')->name('course_users_page');
+  // Route::get('/courses/{course_id}/link-users', 'index')->name('course_users_linking');
 
   Route::post('/courses', 'store')->name('course_creation');
   Route::put('/courses/{course_id}', 'update')->name('course_modification');
@@ -61,6 +63,7 @@ Route::controller(LessonController::class)->group(function () {
 
 /* -------------------------------- Projects -------------------------------- */
 Route::controller(ProjectController::class)->group(function () {
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/users', 'getUsers')->name('project_users_page');
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/create', 'create')->name('project_creation_page');
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/edit', 'edit')->name('project_modification_page');
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}', 'show')->name('project_details_page'); /* List user uploads for teachers */
@@ -68,6 +71,18 @@ Route::controller(ProjectController::class)->group(function () {
   Route::post('/courses/{course_id}/lessons/{lesson_id}/projects', 'store')->name('project_creation');
   Route::put('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}', 'update')->name('project_modification');
   Route::delete('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}', 'destroy')->name('project_deletion');
+});
+
+/* ---------------------------------- Users --------------------------------- */
+Route::controller(UserController::class)->group(function () {
+  // TODO: See if it is okay to add a user profile to edit his own data
+  // Route::get('/users/{user_id}/edit', 'edit')->name('user_modification_page');
+  // TODO: See if it is okay to add page to see user details (for himself and the teachers)
+  // Route::get('/users/{user_id}', 'show')->name('user_details_page');
+
+  // Route::put('/users/{user_id}', 'update')->name('user_modification');
+  // TODO: See if it is okay to add a deletetion button to the user profile to delete the account (Just 'admin' can delete)
+  // Route::delete('/users/{user_id}', 'destroy')->name('user_deletion');
 });
 
 /* ------------------------------ User Uploads ------------------------------ */

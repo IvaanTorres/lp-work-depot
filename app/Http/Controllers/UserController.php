@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Roles;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +11,15 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {   
+    public $user;
+
+    public function __construct()
+    {
+        $this->user = new user;
+    }
+
+    /* ---------------------------------- Auth ---------------------------------- */
+
     public function show_register(){
         return view('auth.register.index');
     }
@@ -20,14 +31,14 @@ class UserController extends Controller
             'password' => ['required', 'string', 'min:8'],
         ]);
  
-        $user = User::create([
+        $new_user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
  
         /* Create and log the user in the application */
-        Auth::login($user);
+        Auth::login($new_user);
  
         return redirect()->route('courses_list_page');
     }
@@ -61,5 +72,12 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login_page');
+    }
+
+    /* ---------------------------------- User ---------------------------------- */
+
+    public function index($course_id, $lesson_id, $project_id){
+        $students = $this->user->getUsersOfCourse($course_id, Roles::Student)->get();
+        return view('users.index', compact('students'));
     }
 }

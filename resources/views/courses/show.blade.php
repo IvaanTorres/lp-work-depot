@@ -10,6 +10,9 @@
     <button type="submit">Delete</button>
   </form>
   <a href="{{route('course_modification_page', ['course_id' => $course->id])}}">Edit</a>
+  <a href="{{route('course_users_page', [
+    'course_id' => $course->id,
+  ])}}">Link users</a>
   
   {{-- Lessons --}}
   <h2>Lessons (Asignaturas)</h2>

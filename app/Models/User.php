@@ -3,7 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\Roles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -49,11 +52,32 @@ class User extends Authenticatable
         return $this->role()->first()->value == $role;
     }
 
+    public static function getUsersOfCourse($course_id, $role = null){
+        $students = null;
+        if($role){
+            $students = Role::where('value', $role)->first()->users()
+                ->where(function($query) use ($course_id){
+                    // Get the resulted users associated to the course
+                    $query->whereHas('courses', function($query) use ($course_id){
+                        $query->where('course_id', $course_id);
+                    });
+                });
+        }else{
+            $students = User::where(function($query) use ($course_id){
+                // Get the resulted users associated to the course
+                $query->whereHas('courses', function($query) use ($course_id){
+                    $query->where('course_id', $course_id);
+                });
+            });
+        }
+        return $students;
+    }
+
     /* ------------------------------ Relationships ----------------------------- */
 
     /* 1-M */
-    public function role(): HasOne {
-        return $this->hasOne(Role::class, 'id', 'role_id');
+    public function role(): BelongsTo {
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
     /* M-M */
