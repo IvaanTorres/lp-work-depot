@@ -11,13 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {   
-    public $user;
-
-    public function __construct()
-    {
-        $this->user = new user;
-    }
-
+    
     /* ---------------------------------- Auth ---------------------------------- */
 
     public function show_register(){

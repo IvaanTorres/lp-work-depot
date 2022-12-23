@@ -10,8 +10,7 @@ class LessonController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-        // $this->middleware('role:teacher');
+        $this->middleware(['auth', 'roles:teacher']);
     }
 
     public function create($course_id){

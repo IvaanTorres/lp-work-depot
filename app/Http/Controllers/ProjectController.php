@@ -13,7 +13,7 @@ class ProjectController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->middleware('role:teacher');
+        $this->middleware('role:teacher', ['except' => ['show']]);
     }
 
     public function getUsers($course_id, $lesson_id, $project_id){

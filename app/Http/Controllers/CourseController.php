@@ -13,7 +13,7 @@ class CourseController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->middleware('role:teacher');
+        $this->middleware('roles:teacher', ['except' => ['index', 'show']]);
     }
 
     public function getUsers($course_id){
