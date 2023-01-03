@@ -17,10 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            /* $table->string('upload'); // Change: It can be pdf, image, etc 
-            $table->string('link')->nullable(); */
-            $table->string('upload_type')->nullable();
-            $table->unsignedInteger('upload_id')->nullable();
+
             $table->timestamps();
         });
     }

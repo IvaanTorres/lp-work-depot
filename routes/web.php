@@ -92,10 +92,10 @@ Route::controller(UploadController::class)->group(function () {
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/{uploads_id}', 'index')->name('upload_details_page');
 
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/create', 'index')->name('upload_creation_page');
-  Route::post('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_creation_page');
+  Route::post('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'store')->name('upload_creation');
 
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/edit', 'index')->name('upload_modification_page');
-  Route::put('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_modification_page');
+  Route::put('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_modification');
 
   Route::delete('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'index')->name('upload_modification_page');
 });

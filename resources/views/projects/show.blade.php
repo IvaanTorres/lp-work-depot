@@ -27,5 +27,38 @@
   <hr>
   <h2>Uploads</h2>
   <p>Aqui es donde tengo que hacer el drag and drop the los upload</p>
+  Link upload
+  <form action="{{route('upload_creation', [
+    'course_id' => $course_id,
+    'lesson_id' => $lesson_id,
+    'project_id' => $project->id
+  ])}}" method="POST" enctype="multipart/form-data">
+    @csrf
+
+    <input type="file" name="upload_file[]" placeholder="Upload file">
+    <br>
+
+    {{-- {{dd($project->uploads);}} --}}
+    @foreach ($project->uploads as $upload)
+      @foreach ($upload->links as $link)
+        <input type="text" name="upload_link[]" placeholder="Upload link" value="{{$link->link}}">
+      @endforeach
+    @endforeach
+    <br>
+    <input type="text" name="upload_link[]" placeholder="Upload link">
+    {{-- <input type="text" name="upload_link[]" placeholder="Upload link">
+    <input type="text" name="upload_link[]" placeholder="Upload link"> --}}
+    <br>
+    <button type="submit">Link upload</button>
+  </form>
+
+  {{-- Uploaded photo --}}
+  {{-- @foreach ($project->uploads as $upload)
+    @foreach ($upload->files as $file)
+      <div>
+        <img src="{{asset($file->file_url)}}" alt="Uploaded photo">
+      </div>
+    @endforeach
+  @endforeach --}}
 
 @endsection

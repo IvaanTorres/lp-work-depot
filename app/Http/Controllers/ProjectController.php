@@ -7,13 +7,14 @@ use App\Models\Lesson;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:teacher', ['except' => ['show']]);
+        $this->middleware('roles:teacher', ['except' => ['show']]);
     }
 
     public function getUsers($course_id, $lesson_id, $project_id){
@@ -97,6 +98,7 @@ class ProjectController extends Controller
     public function destroy($course_id, $lesson_id, $project_id){
         $project = Project::findOrFail($project_id);
         $project->delete();
+        Storage::deleteDirectory('public/uploads/project_'.$project_id);
         return redirect()->route('course_details_page', $course_id)->with('success', 'Project deleted successfully');
     }
 

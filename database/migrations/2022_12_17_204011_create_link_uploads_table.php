@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('link_uploads', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->string('link')->nullable();
             $table->timestamps();
         });

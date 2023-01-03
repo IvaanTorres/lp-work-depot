@@ -23,7 +23,7 @@ class Project extends Model
     }
 
     // /* 1-M */
-    // public function uploads(): HasMany {
-    //     return $this->hasMany(Upload::class);
-    // }
+    public function uploads(): HasMany {
+        return $this->hasMany(Upload::class, 'project_id');
+    }
 }
