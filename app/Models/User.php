@@ -86,7 +86,7 @@ class User extends Authenticatable
     }
 
     // /* 1-M */
-    // public function uploads(): HasMany {
-    //     return $this->hasMany(Upload::class);
-    // }
+    public function uploads(): HasMany {
+        return $this->hasMany(Upload::class, 'user_id');
+    }
 }

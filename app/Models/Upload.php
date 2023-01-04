@@ -10,16 +10,21 @@ class Upload extends Model
 {
     use HasFactory;
 
+    function testDelete(){
+        $this->links()->delete(); // DELETE * FROM files WHERE user_id = ? query
+        parent::delete();
+    }
+
     /* ------------------------------ Relationships ----------------------------- */
 
     /* M-1 */
     public function project(): BelongsTo {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project_id');
     }
 
     /* M-1 */
     public function user(): BelongsTo {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /* It offers a kind of inheritance for the types of uploads the user can upload */

@@ -31,6 +31,7 @@ class ProjectController extends Controller
 
     public function show($course_id, $lesson_id, $project_id){
         $project = Project::findOrFail($project_id);
+        $uploads = $project->uploads()->where('user_id', auth()->user()->id)->get();
 
         // Check if the user is enrolled in the course
         if(auth()->user()->courses->contains($project->lesson->course)){
@@ -38,6 +39,7 @@ class ProjectController extends Controller
                 'course_id' => $course_id,
                 'lesson_id' => $lesson_id,
                 'project' => $project,
+                'uploads' => $uploads,
             ]);
         }else{
             return back()->with('error', 'You are not enrolled in this course');

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('uploads', function (Blueprint $table) {
             $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
         });
     }
 
