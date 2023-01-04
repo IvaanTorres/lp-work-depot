@@ -91,7 +91,9 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(UploadController::class)->group(function () {
   // Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/{uploads_id}', 'index')->name('upload_details_page');
   Route::post('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/{file_id}/download', 'download_file')->name('upload_file_download');
+  Route::delete('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/{document_id}', 'destroy')->name('upload_deletion');
 
+  /* --------------------------------- General -------------------------------- */
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads/create', 'index')->name('upload_creation_page');
   Route::post('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads', 'store')->name('upload_creation');
 

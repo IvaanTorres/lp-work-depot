@@ -10,6 +10,19 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
+    public function destroy(Request $request, $course_id, $lesson_id, $project_id, $document_id){
+        $document = LinkUpload::find($document_id) ?? FileUpload::find($document_id);
+        
+        if(get_class($document) == FileUpload::class){
+            // Delete the file
+            Storage::delete($document->file_url);
+        }
+        // Delete the upload content
+        $document->delete();
+
+        return redirect()->back();
+    }
+
     public function download_file(Request $request, $course_id, $lesson_id, $project_id, $file_id){
         $file = FileUpload::find($file_id);
         return Storage::download($file->file_url);
@@ -17,16 +30,13 @@ class UploadController extends Controller
 
     public function store(Request $request, $course_id, $lesson_id, $project_id){
         // $request->validate([
-        //     'upload_file' => 'required', // TODO: Add validation for file type
+        //     'upload_link.*' => 'nullable|url',
+        //     'upload_file.*' => 'nullable|file|max:10240',
         // ]);
 
         $upload = Upload::where('user_id', Auth()->user()->id)->where('project_id', $project_id)->first();
-        // Upload already exists, delete it
-        if($upload){
-            // Delete the upload content
-            $upload->links()->delete();
-            $upload->files()->delete();
-        }else{
+
+        if(!$upload){
             // Create the new upload
             $upload = new Upload();
             $upload->title = 'test'; // TODO: Get from request
@@ -35,7 +45,6 @@ class UploadController extends Controller
             $upload->user()->associate(Auth()->user()->id);
             $upload->save();
         }
-        // dd($upload);
 
         // Upload the links
         $filled_links = array_values(get_object_vars((object) array_filter($request->input('upload_link') ?? [], fn($link) => !empty($link))));
@@ -56,17 +65,19 @@ class UploadController extends Controller
 
         // Upload the files
         if(sizeof($filled_files) > 0){
-            $file_path = 'public/uploads/project_' . $project_id . '/user_' . Auth()->user()->id;
-            Storage::makeDirectory($file_path, 0755, true, true);
+            $directory_path = 'public/uploads/project_' . $project_id . '/user_' . Auth()->user()->id;
+            if(!Storage::exists($directory_path)){
+                Storage::makeDirectory($directory_path, 0777, true, true);
+            }
 
             foreach($filled_files as $file){
-                
                 // Create the file instance
                 $new_uploadable_file = new FileUpload();
-                $file_path = $file->store($file_path);
+                $file_path = $file->store($directory_path);
+                // dd($file_path);
                 $new_uploadable_file->file_url = $file_path;
                 $new_uploadable_file->save();
-                // // // Associate the upload with the file
+                // // // // Associate the upload with the file
                 $new_uploadable_file->uploads()->save($upload);
             }
         }
