@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
+    public function download_file(Request $request, $course_id, $lesson_id, $project_id, $file_id){
+        $file = FileUpload::find($file_id);
+        return Storage::download($file->file_url);
+    }
+
     public function store(Request $request, $course_id, $lesson_id, $project_id){
         // $request->validate([
         //     'upload_file' => 'required', // TODO: Add validation for file type
