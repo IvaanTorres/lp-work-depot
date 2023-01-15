@@ -66,6 +66,9 @@ Route::controller(LessonController::class)->group(function () {
 /* -------------------------------- Projects -------------------------------- */
 Route::controller(ProjectController::class)->group(function () {
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/users', 'getUsers')->name('project_users_page');
+  Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/users/{user_id}', 'getUserDetails')->name('project_user_details_page');
+  Route::put('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/users/{user_id}', 'evaluate')->name('project_evaluate');
+
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/create', 'create')->name('project_creation_page');
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/edit', 'edit')->name('project_modification_page');
   Route::get('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}', 'show')->name('project_details_page'); /* List user uploads for teachers */

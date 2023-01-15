@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\Roles;
 use App\Models\Lesson;
+use App\Models\Mark;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,6 +26,39 @@ class ProjectController extends Controller
             'project_id' => $project_id,
             'students' => $students,
         ]);
+    }
+    
+    public function getUserDetails($course_id, $lesson_id, $project_id, $user_id){
+        $user = User::findOrFail($user_id);
+        $project = Project::findOrFail($project_id);
+        // dd($user->uploads);
+        return view('projects.user-details', [
+            'course_id' => $course_id,
+            'lesson_id' => $lesson_id,
+            'project' => $project,
+            'user' => $user,
+        ]);
+    }
+
+    public function evaluate(Request $request, $course_id, $lesson_id, $project_id, $user_id){
+        request()->validate([
+            'mark' => 'required|numeric|min:0|max:20',
+        ]);
+
+        $user = User::findOrFail($user_id);
+        $mark = $user->marks->firstWhere('project_id', $project_id);
+
+        if($mark){
+            $mark->mark = $request->input('mark');
+            $mark->save();
+        }else{
+            $mark = new Mark();
+            $mark->mark = $request->input('mark');
+            $mark->user()->associate($user_id);
+            $mark->project()->associate($project_id);
+            $mark->save();
+        }
+        return back()->with('success', 'Mark updated successfully');
     }
 
     /* ---------------------------------- CRUD ---------------------------------- */

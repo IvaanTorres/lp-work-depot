@@ -3,6 +3,8 @@
 @section('content')
   <h1>{{$project->title}} (Proyecto)</h1>
   <p>{{$project->description}}</p>
+  <p>Mark: {{Auth::user()->marks->firstWhere('project_id', $project->id)->mark ?? 'Not marked yet'}}</p>
+
   <form action="{{route('project_deletion', [
     'course_id' => $course_id,
     'lesson_id' => $lesson_id,

@@ -26,4 +26,9 @@ class Project extends Model
     public function uploads(): HasMany {
         return $this->hasMany(Upload::class, 'project_id');
     }
+
+    /* 1-M */
+    public function marks(): HasMany {
+        return $this->hasMany(Mark::class, 'project_id');
+    }
 }
