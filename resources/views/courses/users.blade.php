@@ -21,6 +21,12 @@
     @endforeach
   </ul>
   {{-- Add user --}}
+
+  {{-- Errors --}}
+  @if ($errors->any())
+    <div>{{ $errors->first() }}</div>
+  @endif
+
   <form action="{{route('course_link_users', ['course_id' => $course_id])}}" method="POST">
     @csrf
     <input type="hidden" name="course_id" value="{{$course_id}}">

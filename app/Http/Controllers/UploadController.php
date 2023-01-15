@@ -12,7 +12,7 @@ class UploadController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('auth:teacher,student');
+        $this->middleware('auth');
     }
     
     public function destroy(Request $request, $course_id, $lesson_id, $project_id, $document_id){
@@ -34,22 +34,30 @@ class UploadController extends Controller
     }
 
     public function store(Request $request, $course_id, $lesson_id, $project_id){
-        // $request->validate([
-        //     'upload_link.*' => 'nullable|url',
-        //     'upload_file.*' => 'nullable|file|max:10240',
-        // ]);
+        $request->validate([
+            'upload_title' => 'required|string|max:255',
+            'upload_description' => 'nullable|string|max:255',
+            'upload_link' => 'nullable|array',
+            'upload_link.*' => 'nullable|url',
+            'upload_file' => 'nullable|array',
+            'upload_file.*' => 'nullable|file|max:10240',
+        ]);
 
         $upload = Upload::where('user_id', Auth()->user()->id)->where('project_id', $project_id)->first();
 
         if(!$upload){
             // Create the new upload
             $upload = new Upload();
-            $upload->title = 'test'; // TODO: Get from request
-            $upload->description = 'test'; // TODO: Get from request
+            $upload->title = $request->input('upload_title');
+            $upload->description = $request->input('upload_description');
             $upload->project()->associate($project_id);
             $upload->user()->associate(Auth()->user()->id);
             $upload->save();
         }
+
+        $upload->title = $request->input('upload_title');
+        $upload->description = $request->input('upload_description');
+        $upload->save();
 
         // Upload the links
         $filled_links = array_values(get_object_vars((object) array_filter($request->input('upload_link') ?? [], fn($link) => !empty($link))));

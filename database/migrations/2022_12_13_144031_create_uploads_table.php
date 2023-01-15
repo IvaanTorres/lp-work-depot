@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('uploads', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
-
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

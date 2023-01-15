@@ -3,15 +3,26 @@
 @section('content')
 <form action="{{ route('course_creation') }}" method="POST">
   @csrf
+
+  {{-- Errors --}}
+  @if ($errors->any())
+    @if ($errors->has('lesson-description.*'))
+      <div>The lesson description must be a text and is mandatory if the title is set</div>
+    @else
+      <div>{{ $errors->first() }}</div>
+    @endif
+  @endif
+
   <div>
     <label for="title">Title</label>
     <input type="text" name="title" id="title" value="{{ old('title') }}">
   </div>
+
   <div>
     <label for="description">Description</label>
     <textarea name="description" id="description" cols="30" rows="10">{{ old('description') }}</textarea>
   </div>
-  <div>
+  
   <div style="background: lightblue">
     <div id="lesson-create-button">Add lesson</div>
     <div id="lesson-create-field"></div>

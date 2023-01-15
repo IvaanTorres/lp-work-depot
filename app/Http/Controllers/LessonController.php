@@ -21,8 +21,12 @@ class LessonController extends Controller
 
     public function store(Request $request, $course_id){
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'project-title' => 'required|array',
+            'project-title.*' => 'nullable|string',
+            'project-description' => 'required|array',
+            'project-description.*' => 'nullable|required_with:project-title.*|string', // lesson-description.* is required if lesson-title.* is not null
         ]);
         
         $lesson = new Lesson();
@@ -50,8 +54,12 @@ class LessonController extends Controller
 
     public function update(Request $request, $course_id, $lesson_id){
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'project-title' => 'required|array',
+            'project-title.*' => 'nullable|string',
+            'project-description' => 'required|array',
+            'project-description.*' => 'nullable|required_with:project-title.*|string', // lesson-description.* is required if lesson-title.* is not null
         ]);
 
         $lesson = Lesson::find($lesson_id);

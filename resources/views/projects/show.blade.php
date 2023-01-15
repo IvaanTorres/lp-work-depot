@@ -38,58 +38,76 @@
 
   {{-- Just student --}}
   @if (Auth::user()->hasRole(App\Enums\Roles::Student->value))
-    <h2>Uploads</h2>
+    <h2>Upload</h2>
+
+    <p>Title: {{$upload->title}}</p>
+    <p>Description: {{$upload->description}}</p>
+
     {{-- Uploaded files and links --}}
     {{-- Files --}}
-    @foreach ($uploads as $upload)
-      <h4>Files</h4>
-      @foreach ($upload->files as $file)
-          <div id="file-wrapper">
-            <form action="{{route('upload_deletion', [
-              'course_id' => $course_id,
-              'lesson_id' => $lesson_id,
-              'project_id' => $project->id,
-              'document_id' => $file->id,
-            ])}}" method="post">
-              @csrf
-              @method('DELETE')
-              <input type="hidden" name="file_id" value="{{$file->id}}">
-              <input type="submit" value="Delete file">  
-            </form>
-            <img src="{{asset('assets/img/document-icon.png')}}" alt="Photo" width="250px" height="250px" />
-            <form action="{{route('upload_file_download' , [
-              'course_id' => $course_id,
-              'lesson_id' => $lesson_id,
-              'project_id' => $project->id,
-              'file_id' => $file->id,
-            ])}}" method="POST">
-              @csrf
-              <input type="submit" value="Download">
-            </form>
-          </div>
-      @endforeach
-
-      {{-- Links --}}
-      <h4>Links</h4>
-      @foreach ($upload->links as $link)
-        <div id="link-wrapper">
-          <p>{{$link->link}}</p>
+    <h4>Files</h4>
+    @foreach ($upload->files as $file)
+        <div id="file-wrapper">
           <form action="{{route('upload_deletion', [
             'course_id' => $course_id,
             'lesson_id' => $lesson_id,
             'project_id' => $project->id,
-            'document_id' => $link->id,
+            'document_id' => $file->id,
           ])}}" method="post">
             @csrf
             @method('DELETE')
-            <input type="hidden" name="link_id" value="{{$link->id}}">
-            <input type="submit" value="Delete link">  
+            <input type="hidden" name="file_id" value="{{$file->id}}">
+            <input type="submit" value="Delete file">  
+          </form>
+          <img src="{{asset('assets/img/document-icon.png')}}" alt="Photo" width="250px" height="250px" />
+          <form action="{{route('upload_file_download' , [
+            'course_id' => $course_id,
+            'lesson_id' => $lesson_id,
+            'project_id' => $project->id,
+            'file_id' => $file->id,
+          ])}}" method="POST">
+            @csrf
+            <input type="submit" value="Download">
           </form>
         </div>
-      @endforeach
+    @endforeach
+
+    {{-- Links --}}
+    <h4>Links</h4>
+    @foreach ($upload->links as $link)
+      <div id="link-wrapper">
+        <p>{{$link->link}}</p>
+        <form action="{{route('upload_deletion', [
+          'course_id' => $course_id,
+          'lesson_id' => $lesson_id,
+          'project_id' => $project->id,
+          'document_id' => $link->id,
+        ])}}" method="post">
+          @csrf
+          @method('DELETE')
+          <input type="hidden" name="link_id" value="{{$link->id}}">
+          <input type="submit" value="Delete link">  
+        </form>
+      </div>
     @endforeach
 
     <div style="width: 100%; height: 3px; background: black"></div>
+
+    {{-- Errors --}}
+
+    @if ($errors->any())
+      {{-- File or link error --}}
+      @if ($errors->has('upload_link.*') || $errors->has('upload_file.*'))
+        @if ($errors->has('upload_link.*'))
+          <div class="alert alert-danger">The links must be valid URL's</div>
+        @endif
+        @if ($errors->has('upload_file.*'))
+          <div class="alert alert-danger">Some file is too big</div>
+        @endif
+      @else
+        <div>{{ $errors->first() }}</div>
+      @endif
+    @endif
 
     {{-- Upload form --}}
     <form action="{{route('upload_creation', [
@@ -99,11 +117,22 @@
     ])}}" method="POST" enctype="multipart/form-data">
       @csrf
 
+      {{-- Title --}}
+      <label for="upload_title">Title</label>
+      <input type="text" name="upload_title" id="upload_title" value="{{$upload->title}}">
+
+      {{-- Description --}}
+      <label for="upload_description">Description</label>
+      <input type="text" name="upload_description" id="upload_description" value="{{$upload->description}}">
+
+      {{-- Files --}}
       <br>
       <div style="background: lightblue">
         <div id="file-create-button">Add file</div>
         <div id="file-create-field"></div>
       </div>
+        
+      {{-- Links --}}
       <br>
       <div style="background: lightblue">
         <div id="link-create-button">Add link</div>

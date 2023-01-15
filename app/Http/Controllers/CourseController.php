@@ -26,7 +26,7 @@ class CourseController extends Controller
 
     public function linkUser(Request $request, $course_id){
         $request->validate([
-            'user_email' => 'required',
+            'user_email' => 'required|email|exists:users,email',
         ]);
 
         $course = Course::findOrFail($course_id);
@@ -71,10 +71,12 @@ class CourseController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'lesson-title' => 'required',
-            'lesson-description' => 'required',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'lesson-title' => 'required|array',
+            'lesson-title.*' => 'nullable|string',
+            'lesson-description' => 'required|array',
+            'lesson-description.*' => 'nullable|required_with:lesson-title.*|string', // lesson-description.* is required if lesson-title.* is not null
         ]);
 
         $course = Course::create($request->all());
@@ -104,10 +106,12 @@ class CourseController extends Controller
 
     public function update(Request $request, $course_id){
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'lesson-title' => 'required',
-            'lesson-description' => 'required',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'lesson-title' => 'required|array',
+            'lesson-title.*' => 'nullable|string',
+            'lesson-description' => 'required|array',
+            'lesson-description.*' => 'nullable|required_with:lesson-title.*|string', // lesson-description.* is required if lesson-title.* is not null
         ]);
 
         $course = Course::find($course_id);

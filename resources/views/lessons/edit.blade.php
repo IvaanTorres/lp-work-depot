@@ -8,14 +8,26 @@
   ]) }}" method="POST">
     @csrf
     @method('PUT')
+
+    {{-- Errors --}}
+    @if ($errors->any())
+      @if ($errors->has('project-description.*'))
+        <div>The project description must be a text and is mandatory if the title is set</div>
+      @else
+        <div>{{ $errors->first() }}</div>
+      @endif
+    @endif
+
     <div>
       <label for="title">Title</label>
       <input type="text" name="title" id="title" value="{{ $lesson->title }}">
     </div>
+
     <div>
       <label for="description">Description</label>
       <textarea name="description" id="description" cols="30" rows="10">{{ $lesson->description }}</textarea>
     </div>
+
     <div style="background: lightblue">
       <div id="project-create-button">Add project</div>
       <div id="project-field">
@@ -36,6 +48,7 @@
         @endforeach
       </div>
     </div>
+    
     <div>
       <button type="submit">Edit</button>
     </div>

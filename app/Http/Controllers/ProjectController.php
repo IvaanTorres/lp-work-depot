@@ -42,18 +42,18 @@ class ProjectController extends Controller
 
     public function evaluate(Request $request, $course_id, $lesson_id, $project_id, $user_id){
         request()->validate([
-            'mark' => 'required|numeric|min:0|max:20',
+            'mark' => 'required|numeric|min:0|max:20', // Mark from 0 to 20
         ]);
 
         $user = User::findOrFail($user_id);
         $mark = $user->marks->firstWhere('project_id', $project_id);
 
         if($mark){
-            $mark->mark = $request->input('mark');
+            $mark->mark = round($request->input('mark'), 2);
             $mark->save();
         }else{
             $mark = new Mark();
-            $mark->mark = $request->input('mark');
+            $mark->mark = round($request->input('mark'), 2);
             $mark->user()->associate($user_id);
             $mark->project()->associate($project_id);
             $mark->save();
@@ -65,7 +65,7 @@ class ProjectController extends Controller
 
     public function show($course_id, $lesson_id, $project_id){
         $project = Project::findOrFail($project_id);
-        $uploads = $project->uploads()->where('user_id', auth()->user()->id)->get();
+        $upload = $project->uploads()->where('user_id', auth()->user()->id)->first();
 
         // Check if the user is enrolled in the course
         if(auth()->user()->courses->contains($project->lesson->course)){
@@ -73,7 +73,7 @@ class ProjectController extends Controller
                 'course_id' => $course_id,
                 'lesson_id' => $lesson_id,
                 'project' => $project,
-                'uploads' => $uploads,
+                'upload' => $upload,
             ]);
         }else{
             return back()->with('error', 'You are not enrolled in this course');
@@ -120,6 +120,7 @@ class ProjectController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
+            'lesson_id' => 'required'
         ]);
 
         $project = Project::findOrFail($project_id);

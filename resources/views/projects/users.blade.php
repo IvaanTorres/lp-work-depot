@@ -24,7 +24,14 @@
           ])}}" method="POST">
             @csrf
             @method('PUT')
-            <input type="number" name="mark" value="{{$student->marks->firstWhere('project_id', $project_id)->mark ?? ''}}">
+
+            <input type="number" name="mark" step="0.00001" value="{{$student->marks->firstWhere('project_id', $project_id)->mark ?? ''}}">
+
+            {{-- Errors --}}
+            @if ($errors->any())
+              <div>{{ $errors->first() }}</div>
+            @endif
+
             <button type="submit">Update mark</button>
           </form>
         </div>
