@@ -16,6 +16,7 @@ class Lesson extends Model
         'description',
     ];
 
+    /* ------------------------------ Realtionships ----------------------------- */
     /* M-1 */
     public function course(): BelongsTo {
         return $this->belongsTo(Course::class, 'course_id');

@@ -10,6 +10,13 @@ class Mark extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'mark',
+        'user_id',
+        'project_id',
+    ];
+
+    /* ------------------------------ Relationships ----------------------------- */
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }

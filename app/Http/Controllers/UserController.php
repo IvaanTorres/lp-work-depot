@@ -67,11 +67,5 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('login_page');
     }
-
-    /* ---------------------------------- User ---------------------------------- */
-
-    public function index($course_id, $lesson_id, $project_id){
-        $students = $this->user->getUsersOfCourse($course_id, Roles::Student)->get();
-        return view('users.index', compact('students'));
-    }
+    
 }

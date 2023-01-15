@@ -48,6 +48,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /* -------------------------------- Functions ------------------------------- */
     public function hasRole($role) {
         return $this->role()->first()->value == $role;
     }
@@ -74,7 +75,6 @@ class User extends Authenticatable
     }
 
     /* ------------------------------ Relationships ----------------------------- */
-
     /* 1-M */
     public function role(): BelongsTo {
         return $this->belongsTo(Role::class, 'role_id');
@@ -85,7 +85,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'user_course');
     }
 
-    // /* 1-M */
+    /* 1-M */
     public function uploads(): HasMany {
         return $this->hasMany(Upload::class, 'user_id');
     }

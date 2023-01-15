@@ -1,16 +1,12 @@
 @extends('base')
 
 @section('content')
-  <h1>Welcome {{Session::get('username')}}</h1> {{-- Check --}}
-  <form action="{{route('logout')}}" method="post">
-    @csrf
-    <button type="submit">Logout</button>
-  </form>
+  <h1>Welcome {{Auth::user()->name}}</h1> {{-- Check --}}
 
   @if (Auth::user()->hasRole(App\Enums\Roles::Teacher->value))
-    <a href="{{ route('courses_list_page') }}">Dashboard Teacher</a>
+    <p>Dashboard Teacher</p>
   @elseif (Auth::user()->hasRole(App\Enums\Roles::Student->value))
-    <a href="{{ route('courses_list_page') }}">Dashboard Student</a>
+    <p>Dashboard Student</p>
   @endif
 
   {{-- Courses --}}

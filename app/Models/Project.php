@@ -17,6 +17,7 @@ class Project extends Model
         'description',
     ];
 
+    /* ------------------------------ Relztionships ----------------------------- */
     /* M-1 */
     public function lesson(): BelongsTo {
         return $this->belongsTo(Lesson::class, 'lesson_id');

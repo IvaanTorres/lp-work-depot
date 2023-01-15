@@ -17,7 +17,7 @@ class Course extends Model
         'description',
     ];
 
-    // Functions
+    /* -------------------------------- Functions ------------------------------- */
     public function getUserById($user_id){
         return $this->users()->where('user_id', $user_id)->first() ?? false;
     }
@@ -38,7 +38,7 @@ class Course extends Model
         return false;
     }
 
-    // Relationships
+    /* ------------------------------ Realtionships ----------------------------- */
     /* M-M */
     public function users(): BelongsToMany {
         return $this->belongsToMany(User::class, 'user_course');

@@ -3,182 +3,181 @@
 @section('content')
   <h1>{{$project->title}} (Proyecto)</h1>
   <p>{{$project->description}}</p>
-  <p>Mark: {{Auth::user()->marks->firstWhere('project_id', $project->id)->mark ?? 'Not marked yet'}}</p>
 
-  <form action="{{route('project_deletion', [
-    'course_id' => $course_id,
-    'lesson_id' => $lesson_id,
-    'project_id' => $project->id
-  ])}}" method="POST">
-    @csrf
-    @method('DELETE')
-    <input type="hidden" name="project_id" value="{{$project->id}}">
-    <button type="submit">Delete</button>
-  </form>
-  <a href="{{route('project_modification_page', [
-    'course_id' => $course_id,
-    'lesson_id' => $lesson_id,
-    'project_id' => $project->id
-  ])}}">Edit</a>
-  <hr>
-  <a href="{{route('project_users_page', [
-    'course_id' => $course_id,
-    'lesson_id' => $lesson_id,
-    'project_id' => $project->id
-  ])}}">See users</a>
-  <hr>
-  <h2>Uploads</h2>
-  <p>Aqui es donde tengo que hacer el drag and drop the los upload</p>
-  Link upload
+  {{-- Just student --}}
+  @if (Auth::user()->hasRole(App\Enums\Roles::Student->value))
+    <p>Mark: {{Auth::user()->marks->firstWhere('project_id', $project->id)->mark ?? 'Not marked yet'}}</p>
+  @endif
 
-  {{-- Uploaded files and links --}}
-  {{-- Files --}}
-  @foreach ($uploads as $upload)
-    <h4>Files</h4>
-    @foreach ($upload->files as $file)
-        <div id="file-wrapper">
+  {{-- Just teacher --}}
+  @if (Auth::user()->hasRole(App\Enums\Roles::Teacher->value))
+    <form action="{{route('project_deletion', [
+      'course_id' => $course_id,
+      'lesson_id' => $lesson_id,
+      'project_id' => $project->id
+    ])}}" method="POST">
+      @csrf
+      @method('DELETE')
+      <input type="hidden" name="project_id" value="{{$project->id}}">
+      <button type="submit">Delete</button>
+    </form>
+    <a href="{{route('project_modification_page', [
+      'course_id' => $course_id,
+      'lesson_id' => $lesson_id,
+      'project_id' => $project->id
+    ])}}">Edit</a>
+    <hr>
+    <a href="{{route('project_users_page', [
+      'course_id' => $course_id,
+      'lesson_id' => $lesson_id,
+      'project_id' => $project->id
+    ])}}">See users</a>
+  @endif
+
+  <hr>
+
+  {{-- Just student --}}
+  @if (Auth::user()->hasRole(App\Enums\Roles::Student->value))
+    <h2>Uploads</h2>
+    {{-- Uploaded files and links --}}
+    {{-- Files --}}
+    @foreach ($uploads as $upload)
+      <h4>Files</h4>
+      @foreach ($upload->files as $file)
+          <div id="file-wrapper">
+            <form action="{{route('upload_deletion', [
+              'course_id' => $course_id,
+              'lesson_id' => $lesson_id,
+              'project_id' => $project->id,
+              'document_id' => $file->id,
+            ])}}" method="post">
+              @csrf
+              @method('DELETE')
+              <input type="hidden" name="file_id" value="{{$file->id}}">
+              <input type="submit" value="Delete file">  
+            </form>
+            <img src="{{asset('assets/img/document-icon.png')}}" alt="Photo" width="250px" height="250px" />
+            <form action="{{route('upload_file_download' , [
+              'course_id' => $course_id,
+              'lesson_id' => $lesson_id,
+              'project_id' => $project->id,
+              'file_id' => $file->id,
+            ])}}" method="POST">
+              @csrf
+              <input type="submit" value="Download">
+            </form>
+          </div>
+      @endforeach
+
+      {{-- Links --}}
+      <h4>Links</h4>
+      @foreach ($upload->links as $link)
+        <div id="link-wrapper">
+          <p>{{$link->link}}</p>
           <form action="{{route('upload_deletion', [
             'course_id' => $course_id,
             'lesson_id' => $lesson_id,
             'project_id' => $project->id,
-            'document_id' => $file->id,
+            'document_id' => $link->id,
           ])}}" method="post">
             @csrf
             @method('DELETE')
-            <input type="hidden" name="file_id" value="{{$file->id}}">
-            <input type="submit" value="Delete file">  
-          </form>
-          <img src="{{asset('assets/img/document-icon.png')}}" alt="Photo" width="250px" height="250px" />
-          <form action="{{route('upload_file_download' , [
-            'course_id' => $course_id,
-            'lesson_id' => $lesson_id,
-            'project_id' => $project->id,
-            'file_id' => $file->id,
-          ])}}" method="POST">
-            @csrf
-            <input type="submit" value="Download">
+            <input type="hidden" name="link_id" value="{{$link->id}}">
+            <input type="submit" value="Delete link">  
           </form>
         </div>
+      @endforeach
     @endforeach
+
+    <div style="width: 100%; height: 3px; background: black"></div>
+
+    {{-- Upload form --}}
+    <form action="{{route('upload_creation', [
+      'course_id' => $course_id,
+      'lesson_id' => $lesson_id,
+      'project_id' => $project->id,
+    ])}}" method="POST" enctype="multipart/form-data">
+      @csrf
+
+      <br>
+      <div style="background: lightblue">
+        <div id="file-create-button">Add file</div>
+        <div id="file-create-field"></div>
+      </div>
+      <br>
+      <div style="background: lightblue">
+        <div id="link-create-button">Add link</div>
+        <div id="link-create-field"></div>
+      </div>
+      <br>
+      <button type="submit">Upload</button>
+    </form>
+
+    {{-- Files --}}
+    <script>
+      const fileCreateButton = document.getElementById('file-create-button');
+      const fileFieldsContainer = document.getElementById('file-create-field');
+    
+      createNewFile();
+    
+      function addFileField() {
+        createNewFile();
+      }
+    
+      function createNewFile(){
+        const fileContainer = document.createElement('div');
+        fileContainer.classList.add('file-container');
+        // [] is used to make Laravel understand that this is an array
+        const fileTemplate = `
+          <div class="file-delete-button">Delete</div>
+          <input type="file" name="upload_file[]" placeholder="Upload file">
+        `;
+        fileContainer.innerHTML = fileTemplate;
+    
+        // Add event listener to delete button
+        const fileDeleteButton = fileContainer.getElementsByClassName('file-delete-button')[0];
+        fileDeleteButton.addEventListener('click', () => {
+          fileContainer.remove();
+        });
+    
+        fileFieldsContainer.appendChild(fileContainer);
+      }
+    
+      fileCreateButton.addEventListener('click', addFileField);
+    </script>
 
     {{-- Links --}}
-    <h4>Links</h4>
-    @foreach ($upload->links as $link)
-      <div id="link-wrapper">
-        <p>{{$link->link}}</p>
-        <form action="{{route('upload_deletion', [
-          'course_id' => $course_id,
-          'lesson_id' => $lesson_id,
-          'project_id' => $project->id,
-          'document_id' => $link->id,
-        ])}}" method="post">
-          @csrf
-          @method('DELETE')
-          <input type="hidden" name="link_id" value="{{$link->id}}">
-          <input type="submit" value="Delete link">  
-        </form>
-      </div>
-    @endforeach
-  @endforeach
-
-  <div style="width: 100%; height: 3px; background: black"></div>
-
-  {{-- Upload form --}}
-  <form action="{{route('upload_creation', [
-    'course_id' => $course_id,
-    'lesson_id' => $lesson_id,
-    'project_id' => $project->id,
-  ])}}" method="POST" enctype="multipart/form-data">
-    @csrf
-
-    <br>
-    <div style="background: lightblue">
-      <div id="file-create-button">Add file</div>
-      <div id="file-create-field"></div>
-    </div>
-    {{-- <input type="file" name="upload_file[]" placeholder="Upload file"> --}}
-    <br>
-    <div style="background: lightblue">
-      <div id="link-create-button">Add link</div>
-      <div id="link-create-field"></div>
-    </div>
-    <br>
-    <button type="submit">Upload</button>
-  </form>
-
-  {{-- Uploaded photo --}}
-  {{-- @foreach ($project->uploads as $upload)
-    @foreach ($upload->files as $file)
-      <div>
-        <img src="{{asset($file->file_url)}}" alt="Uploaded photo">
-      </div>
-    @endforeach
-  @endforeach --}}
-
-
-  {{-- Files --}}
-  <script>
-    const fileCreateButton = document.getElementById('file-create-button');
-    const fileFieldsContainer = document.getElementById('file-create-field');
-  
-    createNewFile();
-  
-    function addFileField() {
-      createNewFile();
-    }
-  
-    function createNewFile(){
-      const fileContainer = document.createElement('div');
-      fileContainer.classList.add('file-container');
-      // [] is used to make Laravel understand that this is an array
-      const fileTemplate = `
-        <div class="file-delete-button">Delete</div>
-        <input type="file" name="upload_file[]" placeholder="Upload file">
-      `;
-      fileContainer.innerHTML = fileTemplate;
-  
-      // Add event listener to delete button
-      const fileDeleteButton = fileContainer.getElementsByClassName('file-delete-button')[0];
-      fileDeleteButton.addEventListener('click', () => {
-        fileContainer.remove();
-      });
-  
-      fileFieldsContainer.appendChild(fileContainer);
-    }
-  
-    fileCreateButton.addEventListener('click', addFileField);
-  </script>
-
-  {{-- Links --}}
-  <script>
-    const linkCreateButton = document.getElementById('link-create-button');
-    const linkFieldsContainer = document.getElementById('link-create-field');
-  
-    createNewLink();
-  
-    function addLinkField() {
+    <script>
+      const linkCreateButton = document.getElementById('link-create-button');
+      const linkFieldsContainer = document.getElementById('link-create-field');
+    
       createNewLink();
-    }
+    
+      function addLinkField() {
+        createNewLink();
+      }
+    
+      function createNewLink(){
+        const linkContainer = document.createElement('div');
+        linkContainer.classList.add('link-container');
+        // [] is used to make Laravel understand that this is an array
+        const linkTemplate = `
+          <div class="link-delete-button">Delete</div>
+          <input type="link" name="upload_link[]" placeholder="Upload link">
+        `;
+        linkContainer.innerHTML = linkTemplate;
+    
+        // Add event listener to delete button
+        const linkDeleteButton = linkContainer.getElementsByClassName('link-delete-button')[0];
+        linkDeleteButton.addEventListener('click', () => {
+          linkContainer.remove();
+        });
+    
+        linkFieldsContainer.appendChild(linkContainer);
+      }
+    
+      linkCreateButton.addEventListener('click', addLinkField);
+    </script>
+  @endif
   
-    function createNewLink(){
-      const linkContainer = document.createElement('div');
-      linkContainer.classList.add('link-container');
-      // [] is used to make Laravel understand that this is an array
-      const linkTemplate = `
-        <div class="link-delete-button">Delete</div>
-        <input type="link" name="upload_link[]" placeholder="Upload link">
-      `;
-      linkContainer.innerHTML = linkTemplate;
-  
-      // Add event listener to delete button
-      const linkDeleteButton = linkContainer.getElementsByClassName('link-delete-button')[0];
-      linkDeleteButton.addEventListener('click', () => {
-        linkContainer.remove();
-      });
-  
-      linkFieldsContainer.appendChild(linkContainer);
-    }
-  
-    linkCreateButton.addEventListener('click', addLinkField);
-  </script>
 @endsection

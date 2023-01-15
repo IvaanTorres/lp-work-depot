@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth:teacher,student');
+    }
+    
     public function destroy(Request $request, $course_id, $lesson_id, $project_id, $document_id){
         $document = LinkUpload::find($document_id) ?? FileUpload::find($document_id);
         

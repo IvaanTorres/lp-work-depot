@@ -10,13 +10,7 @@ class Upload extends Model
 {
     use HasFactory;
 
-    function testDelete(){
-        $this->links()->delete(); // DELETE * FROM files WHERE user_id = ? query
-        parent::delete();
-    }
-
     /* ------------------------------ Relationships ----------------------------- */
-
     /* M-1 */
     public function project(): BelongsTo {
         return $this->belongsTo(Project::class, 'project_id');
