@@ -107,5 +107,5 @@ Route::controller(UploadController::class)->group(function () {
 
 /* -------------------------------- 404 Error ------------------------------- */
 Route::fallback(function () {
-  //
+  return view('404');
 });
