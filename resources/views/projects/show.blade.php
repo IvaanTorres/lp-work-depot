@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Project Details')
+
 @section('content')
   <h1>{{$project->title}} (Proyecto)</h1>
   <p>{{$project->description}}</p>

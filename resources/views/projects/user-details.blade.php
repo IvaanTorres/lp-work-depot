@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Upload Details Of The Student')
+
 @section('content')
   <h1>{{$project->title}} (Proyecto)</h1>
   <p>{{$project->description}}</p>

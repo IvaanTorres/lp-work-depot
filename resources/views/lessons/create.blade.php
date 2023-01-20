@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Create Lesson')
+
 @section('content')
   {{-- Create form --}}
   <form action="{{ route('lesson_creation', [

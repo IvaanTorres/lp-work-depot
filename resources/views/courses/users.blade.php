@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Linked Students')
+
 @section('content')
   <h1>Students linked to this course</h1>
 

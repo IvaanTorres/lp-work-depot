@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Edit Project')
+
 @section('content')
   {{-- Create edit project form --}}
   <form action="{{route('project_modification', [

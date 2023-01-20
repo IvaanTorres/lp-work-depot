@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Create Course')
+
 @section('content')
 <form action="{{ route('course_creation') }}" method="POST">
   @csrf

@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Edit Course')
+
 @section('content')
 <form action="{{ route('course_modification', ['course_id' => $course->id]) }}" method="POST">
   @method('PUT')

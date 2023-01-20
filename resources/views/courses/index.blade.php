@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Courses')
+
 @section('content')
   <h1>Welcome {{Auth::user()->name}}</h1> {{-- Check --}}
 

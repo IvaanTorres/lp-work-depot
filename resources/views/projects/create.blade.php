@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Create Project')
+
 @section('content')
   {{-- Cretae project form --}}
   <form action="{{route('project_creation', [

@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Edit Lesson')
+
 @section('content')
   {{-- Edit form --}}
   <form action="{{ route('lesson_modification', [

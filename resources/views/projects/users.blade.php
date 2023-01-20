@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Students for this project')
+
 @section('content')
   <h1>Students for this project</h1>
   <div>
