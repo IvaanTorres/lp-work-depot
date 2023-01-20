@@ -25,7 +25,7 @@
   </div>
 
   <ul>
-    @foreach ($students as $student)
+    @forelse ($students as $student)
       <li>
         <p>
           {{$student->name}} 
@@ -40,7 +40,9 @@
           </form>
         </p>
       </li>
-    @endforeach
+    @empty
+      <li>No results</li>
+    @endforelse
   </ul>
   {{-- Add user --}}
 

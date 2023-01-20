@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\Roles;
 use App\Models\Course;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Termwind\Components\Dd;
@@ -17,17 +18,17 @@ class CourseController extends Controller
     }
 
     public function getUsers(Request $request, $course_id){
-        $students = User::getUsersOfCourse($course_id, Roles::Student)->get();
-
         // Search by name
         if($request->search){
             $request->validate([
                 'search' => ['regex:/^[a-zA-ZÀ-ÿ\ ]+$/','max:50','min:3']
             ]);
 
-            $students = $students->filter(function($student) use ($request){
-                return str_contains(strtolower($student->name), strtolower($request->search));
-            });
+            $students = User::getUsersOfCourse($course_id, Roles::Student)
+                ->where('name', 'like', '%'.$request->search.'%')
+                ->get();
+        }else{
+            $students = User::getUsersOfCourse($course_id, Roles::Student)->get();
         }
 
         return view('courses.users', [
