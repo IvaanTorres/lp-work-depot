@@ -11,9 +11,9 @@
       <input id="search-field" type="text" name="search" value="{{request()->search}}">
 
       {{-- Errors --}}
-      @if ($errors->any())
-        <div>{{ $errors->first() }}</div>
-      @endif
+      @error('search')
+        <div>{{ $message }}</div>
+      @enderror
       <button id="search-button" type="submit" disabled>Search</button>
     </form>
 

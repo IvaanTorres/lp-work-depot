@@ -16,8 +16,20 @@ class CourseController extends Controller
         $this->middleware('roles:teacher', ['except' => ['index', 'show']]);
     }
 
-    public function getUsers($course_id){
+    public function getUsers(Request $request, $course_id){
         $students = User::getUsersOfCourse($course_id, Roles::Student)->get();
+
+        // Search by name
+        if($request->search){
+            $request->validate([
+                'search' => ['regex:/^[a-zA-ZÀ-ÿ\ ]+$/','max:50','min:3']
+            ]);
+
+            $students = $students->filter(function($student) use ($request){
+                return str_contains(strtolower($student->name), strtolower($request->search));
+            });
+        }
+
         return view('courses.users', [
             'course_id' => $course_id,
             'students' => $students,
@@ -31,9 +43,14 @@ class CourseController extends Controller
 
         $course = Course::findOrFail($course_id);
         $user = User::where('email', $request->input('user_email'))->first();
-        $course->users()->attach($user);
 
-        return redirect()->route('course_users_page', $course_id)->with('success', 'User linked successfully');
+        // Check if the user is already enrolled in the course
+        if($course->users->contains($user)){
+            return redirect()->back()->withErrors(['alreadyEnrolled' => 'User is already enrolled in this course']);
+        }else{
+            $course->users()->attach($user);
+            return redirect()->back()->with('success', 'User linked successfully');
+        }
     }
 
     public function unlinkUser($course_id, $user_id){
