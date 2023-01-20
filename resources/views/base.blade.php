@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,10 +19,16 @@
         <script src="https://cdn.tailwindcss.com"></script>
 
     </head>
-    <body class="antialiased">
-        @include('partials.navbar')
+    <body class="antialiased h-full">
+        <div class="flex h-full">
+            <div class="w-24 bg-gray-900 text-white h-full he">
+                @include('partials.navbar')
+            </div>
     
-        @section('content')
-        @show
+            <div>
+                @section('content')
+                @show
+            </div>
+        </div>
     </body>
 </html>

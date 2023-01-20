@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', 'Login')
+
 @section('content')
   {{-- Create login form --}}
   <form method="POST" action="{{ route('login') }}">
