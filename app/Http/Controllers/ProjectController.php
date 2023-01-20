@@ -19,32 +19,33 @@ class ProjectController extends Controller
     }
 
     public function getUsers(Request $request, $course_id, $lesson_id, $project_id){
-        $students = User::getUsersOfCourse($course_id, Roles::Student)->get();
         // Search by name
+        $students = [];
         if($request->search){
             $request->validate([
                 'search' => ['regex:/^[a-zA-ZÀ-ÿ\ ]+$/','max:50','min:3']
             ]);
 
-            $students = $students->filter(function($student) use ($request){
-                return str_contains(strtolower($student->name), strtolower($request->search));
-            });
+            $students = User::getUsersOfCourse($course_id, Roles::Student)
+                ->where('name', 'like', '%'.$request->search.'%');
+        }else{
+            $students = User::getUsersOfCourse($course_id, Roles::Student);
         }
+
         // Order by mark
         if($request->order_by == 'mark'){
-            if($request->order == 'asc'){
-                $students = $students->sortBy(function($student) use ($project_id){
-                    $mark = $student->marks->firstWhere('project_id', $project_id);
-                    return $mark ? $mark->mark : 0;
-                });
-            }
-            if($request->order == 'desc'){
-                $students = $students->sortByDesc(function($student) use ($project_id){
-                    $mark = $student->marks->firstWhere('project_id', $project_id);
-                    return $mark ? $mark->mark : 0;
-                });
+            if($request->order == 'asc' || $request->order == 'desc'){
+                $students = $students->orderBy(function ($query) use ($project_id) {
+                    $query->select('mark')
+                        ->from('marks')
+                        ->whereColumn('user_id', 'users.id')
+                        ->where('project_id', $project_id);
+                }, $request->order);
             }
         }
+
+        $students = $students->get();
+
         return view('projects.users', [
             'course_id' => $course_id,
             'lesson_id' => $lesson_id,
