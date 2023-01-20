@@ -2,8 +2,64 @@
 
 @section('content')
   <h1>Students for this project</h1>
+  <div>
+    <form action="{{route('project_users_page', [
+      'course_id' => $course_id,
+      'lesson_id' => $lesson_id,
+      'project_id' => $project_id
+    ])}}" method="GET">
+      <input id="search-field" type="text" name="search" value="{{request()->search}}">
+
+      {{-- Errors --}}
+      @if ($errors->any())
+        <div>{{ $errors->first() }}</div>
+      @endif
+      <button id="search-button" type="submit" disabled>Search</button>
+    </form>
+
+    @if(request()->search)
+      <a href="{{route('project_users_page', [
+        'course_id' => $course_id,
+        'lesson_id' => $lesson_id,
+        'project_id' => $project_id,
+        'order_by' => request()->order_by,
+        'order' => request()->order,
+      ])}}">Clear</a>
+    @endif
+  </div>
+
+  {{-- Order by mark --}}
+  <div>
+    <a href="{{route('project_users_page', [
+      'course_id' => $course_id,
+      'lesson_id' => $lesson_id,
+      'project_id' => $project_id,
+      'search' => request()->search,
+      'order_by' => 'mark',
+      'order' => 'asc'
+    ])}}">Order by mark asc</a>
+
+    <a href="{{route('project_users_page', [
+      'course_id' => $course_id,
+      'lesson_id' => $lesson_id,
+      'project_id' => $project_id,
+      'search' => request()->search,
+      'order_by' => 'mark',
+      'order' => 'desc'
+    ])}}">Order by mark desc</a>
+
+    @if (request()->order_by === 'mark' && (request()->order === 'asc' || request()->order === 'desc'))
+      <a href="{{route('project_users_page', [
+        'course_id' => $course_id,
+        'lesson_id' => $lesson_id,
+        'project_id' => $project_id,
+        'search' => request()->search,
+      ])}}">Clear order by mark</a>
+    @endif
+  </div>
+
   <ul>
-    @foreach ($students as $student)
+    @forelse ($students as $student)
       <li>
         <p>{{$student->name}}</p>
 
@@ -36,6 +92,23 @@
           </form>
         </div>
       </li>
-    @endforeach
+    @empty
+      <li>No students</li>
+    @endforelse
   </ul>
+
+  <script>
+    const searchField = document.getElementById('search-field');
+    const searchButton = document.getElementById('search-button');
+
+    searchField.addEventListener('input', () => {
+      // Min 3 chars to use the search bar
+      if (searchField.value.length > 3) {
+        searchButton.disabled = false;
+      } else {
+        searchButton.disabled = true;
+      }
+    });
+  </script>
+
 @endsection

@@ -18,8 +18,33 @@ class ProjectController extends Controller
         $this->middleware('roles:teacher', ['except' => ['show']]);
     }
 
-    public function getUsers($course_id, $lesson_id, $project_id){
+    public function getUsers(Request $request, $course_id, $lesson_id, $project_id){
         $students = User::getUsersOfCourse($course_id, Roles::Student)->get();
+        // Search by name
+        if($request->search){
+            $request->validate([
+                'search' => ['regex:/^[a-zA-ZÀ-ÿ\ ]+$/','max:50','min:3']
+            ]);
+
+            $students = $students->filter(function($student) use ($request){
+                return str_contains(strtolower($student->name), strtolower($request->search));
+            });
+        }
+        // Order by mark
+        if($request->order_by == 'mark'){
+            if($request->order == 'asc'){
+                $students = $students->sortBy(function($student) use ($project_id){
+                    $mark = $student->marks->firstWhere('project_id', $project_id);
+                    return $mark ? $mark->mark : 0;
+                });
+            }
+            if($request->order == 'desc'){
+                $students = $students->sortByDesc(function($student) use ($project_id){
+                    $mark = $student->marks->firstWhere('project_id', $project_id);
+                    return $mark ? $mark->mark : 0;
+                });
+            }
+        }
         return view('projects.users', [
             'course_id' => $course_id,
             'lesson_id' => $lesson_id,

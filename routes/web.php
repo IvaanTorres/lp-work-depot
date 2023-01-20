@@ -64,7 +64,7 @@ Route::controller(LessonController::class)->group(function () {
 /* -------------------------------- Projects -------------------------------- */
 Route::controller(ProjectController::class)->group(function () {
   Route::prefix('/courses/{course_id}/lessons/{lesson_id}/projects')->group(function () {
-    Route::get('/{project_id}/users', 'getUsers')->name('project_users_page');
+    Route::get('/{project_id}/users/', 'getUsers')->name('project_users_page');
     Route::get('/{project_id}/users/{user_id}', 'getUserDetails')->name('project_user_details_page');
     Route::put('/{project_id}/users/{user_id}', 'evaluate')->name('project_evaluate');
 
