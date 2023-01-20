@@ -78,18 +78,6 @@ Route::controller(ProjectController::class)->group(function () {
   });
 });
 
-/* ---------------------------------- Users --------------------------------- */
-Route::controller(UserController::class)->group(function () {
-  // TODO: See if it is okay to add a user profile to edit his own data
-  // Route::get('/users/{user_id}/edit', 'edit')->name('user_modification_page');
-  // TODO: See if it is okay to add page to see user details (for himself and the teachers)
-  // Route::get('/users/{user_id}', 'show')->name('user_details_page');
-
-  // Route::put('/users/{user_id}', 'update')->name('user_modification');
-  // TODO: See if it is okay to add a deletetion button to the user profile to delete the account (Just 'admin' can delete)
-  // Route::delete('/users/{user_id}', 'destroy')->name('user_deletion');
-});
-
 /* ------------------------------ User Uploads ------------------------------ */
 Route::controller(UploadController::class)->group(function () {
   Route::prefix('/courses/{course_id}/lessons/{lesson_id}/projects/{project_id}/uploads')->group(function () {
