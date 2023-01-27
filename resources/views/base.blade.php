@@ -6,6 +6,9 @@
 
         <title>Moodle - @yield('title')</title>
 
+        {{-- Icon --}}
+        <link rel="icon" href="{{ asset('assets/img/logo-moodle.png') }}">
+
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -18,14 +21,16 @@
         {{-- TailwindCSS --}}
         <script src="https://cdn.tailwindcss.com"></script>
 
+        {{-- Global style --}}
+        <link rel="stylesheet" href="{{ asset('assets/css/tailwind.css') }}">
     </head>
     <body class="antialiased h-full">
         <div class="flex h-full">
-            <div class="w-24 bg-gray-900 text-white h-full he">
+            <div class="w-32 h-full">
                 @include('partials.navbar')
             </div>
     
-            <div>
+            <div class="h-full w-full">
                 @section('content')
                 @show
             </div>
