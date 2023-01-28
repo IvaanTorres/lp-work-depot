@@ -55,7 +55,7 @@
 
     <div class="flex flex-col gap-2 mt-10">
         @forelse ($students as $student)
-            <div class="bg-orange-100 border border-orange-600 flex justify-between p-5 font-semibold rounded-md">
+            <div class="bg-orange-100 border border-orange-600 flex justify-between p-3 font-semibold rounded-md">
                 <p>{{ $student->name }} - <span class="font-normal">{{ $student->email }}</span></p>
                 <form
                     action="{{ route('course_unlink_users', [
