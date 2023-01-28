@@ -3,8 +3,8 @@
 @section('title', 'Project Details')
 
 @section('content')
-  <h1>{{$project->title}} (Proyecto)</h1>
-  <p>{{$project->description}}</p>
+  <h3 class="text-4xl font-semibold">{{$project->title}}</h3>
+  <p class="mt-5">{{$project->description}}</p>
 
   {{-- Just student --}}
   @if (Auth::user()->hasRole(App\Enums\Roles::Student->value))
@@ -13,30 +13,28 @@
 
   {{-- Just teacher --}}
   @if (Auth::user()->hasRole(App\Enums\Roles::Teacher->value))
-    <form action="{{route('project_deletion', [
+    <form class="flex gap-3 mt-6" action="{{route('project_deletion', [
       'course_id' => $course_id,
       'lesson_id' => $lesson_id,
       'project_id' => $project->id
     ])}}" method="POST">
       @csrf
       @method('DELETE')
-      <input type="hidden" name="project_id" value="{{$project->id}}">
-      <button type="submit">Delete</button>
-    </form>
-    <a href="{{route('project_modification_page', [
-      'course_id' => $course_id,
-      'lesson_id' => $lesson_id,
-      'project_id' => $project->id
-    ])}}">Edit</a>
-    <hr>
-    <a href="{{route('project_users_page', [
-      'course_id' => $course_id,
-      'lesson_id' => $lesson_id,
-      'project_id' => $project->id
-    ])}}">See users</a>
-  @endif
 
-  <hr>
+      <input type="hidden" name="project_id" value="{{$project->id}}">
+      <a class="font-medium rounded-full min-w-[100px] text-center bg-gray-200 border hover:bg-gray-300 text-gray-800 transition-all ease-in-out duration-200 border-gray-600 px-3 py-2" href="{{route('project_users_page', [
+        'course_id' => $course_id,
+        'lesson_id' => $lesson_id,
+        'project_id' => $project->id
+      ])}}">See students</a>
+      <a class="font-medium rounded-full min-w-[100px] text-center bg-blue-200 border hover:bg-blue-300 text-blue-800 transition-all ease-in-out duration-200 border-gray-600 px-3 py-2" href="{{route('project_modification_page', [
+        'course_id' => $course_id,
+        'lesson_id' => $lesson_id,
+        'project_id' => $project->id
+      ])}}">Edit</a>
+      <button class="font-medium rounded-full min-w-[100px] text-center bg-red-200 border hover:bg-red-300 text-red-800 transition-all ease-in-out duration-200 border-gray-600 px-3 py-2" type="submit">Delete</button>
+    </form>
+  @endif
 
   {{-- Just student --}}
   @if (Auth::user()->hasRole(App\Enums\Roles::Student->value))

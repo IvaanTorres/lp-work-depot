@@ -3,74 +3,91 @@
 @section('title', 'Linked Students')
 
 @section('content')
-  <h1>Students linked to this course</h1>
+    <h3 class="text-4xl font-semibold">Students of this course</h3>
 
-  <div>
-    <form action="{{route('course_users_page', [
-      'course_id' => $course_id,
-    ])}}" method="GET">
-      <input id="search-field" type="text" name="search" value="{{request()->search}}">
+    <div>
+        <div class="mt-10 mb-5">
+            <p class="mb-1">Filters: </p>
+            <form class="bg-gray-100 p-5 border border-gray-500 rounded-md"
+                action="{{ route('course_users_page', [
+                    'course_id' => $course_id,
+                ]) }}"
+                method="GET">
+                <div class="inline-flex flex-col">
+                    <label class="mb-1" for="search-field">Search by name:</label>
+                    <div class="flex gap-3">
+                        <div class="inline-flex bg-white border border-gray-600 rounded p-1">
+                            <input class="outline-none px-1" id="search-field" type="text" name="search"
+                                value="{{ request()->search }}">
+                            <button class="px-1" id="search-button" type="submit" disabled>
+                              <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        @if (request()->search)
+                            <a class="bg-orange-500 hover:bg-orange-600 transition-all ease-in-out duration-200 text-orange-100 py-1 px-3 rounded-md font-semibold"
+                                href="{{ route('course_users_page', [
+                                    'course_id' => $course_id,
+                                ]) }}">Clear</a>
+                        @endif
+                    </div>
+                </div>
 
-      {{-- Errors --}}
-      @error('search')
-        <div>{{ $message }}</div>
-      @enderror
+                {{-- Errors --}}
+                @error('search')
+                    <div class="mt-2 text-red-500 font-semibold">{{ $message }}</div>
+                @enderror
+            </form>
+        </div>
+    </div>
 
-      <button id="search-button" type="submit" disabled>Search</button>
-    </form>
+    <form class="mt-10" action="{{ route('course_link_users', ['course_id' => $course_id]) }}" method="POST">
+        @csrf
 
-    @if(request()->search)
-      <a href="{{route('course_users_page', [
-        'course_id' => $course_id,
-      ])}}">Clear</a>
-    @endif
-  </div>
+        <input type="hidden" name="course_id" value="{{ $course_id }}">
+        <input class="border border-gray-600 rounded py-1 px-2 outline-none mr-2" type="text" name="user_email" placeholder="Student email">
+        <button class="bg-orange-500 hover:bg-orange-600 transition-all ease-in-out duration-200 text-orange-100 py-1 px-3 rounded-md font-semibold" type="submit">Add</button>
+      
+        {{-- Errors --}}
+        @error('user_email')
+            <div class="mt-2 text-red-500 font-semibold">{{ $message }}</div>
+        @enderror
+      </form>
 
-  <ul>
-    @forelse ($students as $student)
-      <li>
-        <p>
-          {{$student->name}} 
-          <form action="{{route('course_unlink_users', [
-            'course_id' => $course_id,
-            'user_id' => $student->id
-          ])}}" method="POST">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="user_id" value="{{$student->id}}">
-            <button type="submit">Unlink</button>
-          </form>
-        </p>
-      </li>
-    @empty
-      <li>No results</li>
-    @endforelse
-  </ul>
-  {{-- Add user --}}
+    <div class="flex flex-col gap-2 mt-10">
+        @forelse ($students as $student)
+            <div class="bg-orange-100 border border-orange-600 flex justify-between p-5 font-semibold rounded-md">
+                <p>{{ $student->name }} - <span class="font-normal">{{ $student->email }}</span></p>
+                <form
+                    action="{{ route('course_unlink_users', [
+                        'course_id' => $course_id,
+                        'user_id' => $student->id,
+                    ]) }}"
+                    method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="user_id" value="{{ $student->id }}">
+                    <button class="text-orange-600" type="submit">Remove</button>
+                </form>
+            </div>
+        @empty
+            <div>
+              <p>No results found.</p>
+            </div>
+        @endforelse
+    </div>
+    {{-- Add user --}}
 
-  {{-- Errors --}}
-  @if ($errors->any())
-    <div>{{ $errors->first() }}</div>
-  @endif
+    <script>
+        const searchField = document.getElementById('search-field');
+        const searchButton = document.getElementById('search-button');
 
-  <form action="{{route('course_link_users', ['course_id' => $course_id])}}" method="POST">
-    @csrf
-    <input type="hidden" name="course_id" value="{{$course_id}}">
-    <input type="text" name="user_email" placeholder="User email">
-    <button type="submit">Link user</button>
-  </form>
-
-  <script>
-    const searchField = document.getElementById('search-field');
-    const searchButton = document.getElementById('search-button');
-
-    searchField.addEventListener('input', () => {
-      // Min 3 chars to use the search bar
-      if (searchField.value.length > 3) {
-        searchButton.disabled = false;
-      } else {
-        searchButton.disabled = true;
-      }
-    });
-  </script>
+        searchField.addEventListener('input', () => {
+            // Min 3 chars to use the search bar
+            if (searchField.value.length > 3) {
+                searchButton.disabled = false;
+            } else {
+                searchButton.disabled = true;
+            }
+        });
+    </script>
 @endsection
