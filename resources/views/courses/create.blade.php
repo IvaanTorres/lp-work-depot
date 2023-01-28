@@ -32,7 +32,7 @@
   
   <div class="bg-gray-100 border border-gray-300 p-5">
     <div id="lesson-create-field" class="grid grid-cols-3 gap-5 mb-5"></div>
-    <div id="lesson-create-button" class="transition ease-in-out duration-200 inline-block bg-gray-300 border border-gray-700 text-gray-700 p-2 px-5 rounded-md cursor-pointer hover:bg-gray-400">Add lesson</div>
+    <div id="lesson-create-button" class="transition ease-in-out duration-200 inline-block bg-gray-300 border border-gray-700 text-gray-700 p-2 px-5 rounded-md cursor-pointer hover:bg-gray-400">Add</div>
   </div>
 
   <div class="flex mt-5">
@@ -66,7 +66,7 @@
           <textarea class="rounded outline-none p-2" name="lesson-description[]" id="lesson-description" cols="30" rows="10"></textarea>
         </div>
         <div class="flex">
-          <div class="lesson-delete-button ml-auto inline-block bg-red-300 border border-red-800 text-red-800 p-2 px-5 rounded-md cursor-pointer hover:bg-red-400 transition ease-in-out duration-200">Delete lesson</div>
+          <div class="lesson-delete-button ml-auto inline-block bg-red-300 border border-red-800 text-red-800 p-2 px-5 rounded-md cursor-pointer hover:bg-red-400 transition ease-in-out duration-200">Delete</div>
         </div>
       </div>
     `;

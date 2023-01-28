@@ -36,20 +36,20 @@
       @foreach ($course->lessons as $lesson)
         <div class="lesson-container bg-gray-300 border border-gray-400 min-h-[300px] p-5 flex flex-col rounded-md">
           <div class="flex flex-col gap-1 mb-5 max-w-lg">
-            <label for="lesson-title[]">Lesson Title</label>
+            <label for="lesson-title[]">Title</label>
             <input class="rounded outline-none p-2" type="text" name="lesson-title[]" value="{{ $lesson->title }}">
           </div>
           <div class="flex flex-col gap-1 mb-5 max-w-lg h-[200px]">
-            <label for="lesson-description[]">Lesson Description</label>
+            <label for="lesson-description[]">Description</label>
             <textarea class="rounded outline-none p-2" name="lesson-description[]" cols="30" rows="10">{{ $lesson->description }}</textarea>
           </div>
           <div class="flex">
-            <div class="lesson-delete-button ml-auto inline-block bg-red-300 border border-red-800 text-red-800 p-2 px-5 rounded-md cursor-pointer hover:bg-red-400 transition ease-in-out duration-200">Delete lesson</div>
+            <div class="lesson-delete-button ml-auto inline-block bg-red-300 border border-red-800 text-red-800 p-2 px-5 rounded-md cursor-pointer hover:bg-red-400 transition ease-in-out duration-200">Delete</div>
           </div>
         </div>
       @endforeach
     </div>
-    <div class="transition ease-in-out duration-200 inline-block bg-gray-300 border border-gray-700 text-gray-700 p-2 px-5 rounded-md cursor-pointer hover:bg-gray-400" id="lesson-create-button">Add lesson</div>
+    <div class="transition ease-in-out duration-200 inline-block bg-gray-300 border border-gray-700 text-gray-700 p-2 px-5 rounded-md cursor-pointer hover:bg-gray-400" id="lesson-create-button">Add</div>
   </div>
   
   <div class="flex mt-5">
@@ -81,15 +81,15 @@
     const lessonTemplate = `
       <div class="bg-gray-300 border border-gray-400 min-h-[300px] p-5 flex flex-col rounded-md">
         <div class="flex flex-col gap-1 mb-5 max-w-lg">
-          <label for="lesson-title[]">Lesson Title</label>
+          <label for="lesson-title[]">Title</label>
           <input class="rounded outline-none p-2" type="text" name="lesson-title[]">
         </div>
         <div class="flex flex-col gap-1 mb-5 max-w-lg h-[200px]">
-          <label for="lesson-description[]">Lesson Description</label>
+          <label for="lesson-description[]">Description</label>
           <textarea class="rounded outline-none p-2" name="lesson-description[]" cols="30" rows="10"></textarea>
         </div>
         <div class="flex">
-          <div class="lesson-delete-button ml-auto inline-block bg-red-300 border border-red-800 text-red-800 p-2 px-5 rounded-md cursor-pointer hover:bg-red-400 transition ease-in-out duration-200">Delete lesson</div>
+          <div class="lesson-delete-button ml-auto inline-block bg-red-300 border border-red-800 text-red-800 p-2 px-5 rounded-md cursor-pointer hover:bg-red-400 transition ease-in-out duration-200">Delete</div>
         </div>
       </div>
     `;

@@ -15,7 +15,7 @@
 
         <a class="font-medium rounded-full min-w-[100px] text-center bg-gray-200 border hover:bg-gray-300 text-gray-800 transition-all ease-in-out duration-200 border-gray-600 px-3 py-2" href="{{route('course_users_page', [
           'course_id' => $course->id,
-        ])}}">Link students</a>
+        ])}}">Add Students</a>
         <a class="font-medium rounded-full min-w-[100px] text-center bg-blue-200 border hover:bg-blue-300 text-blue-800 transition-all ease-in-out duration-200 border-blue-600 px-3 py-2" href="{{route('course_modification_page', ['course_id' => $course->id])}}">Edit</a>
         <input type="hidden" name="course_id" value="{{$course->id}}">
         <button class="font-medium rounded-full min-w-[100px] text-center bg-red-200 border hover:bg-red-300 text-red-800 transition-all ease-in-out duration-200 border-red-600 px-3 py-2" type="submit">Delete</button>
@@ -51,7 +51,7 @@
                 <a class="text-gray-700 hover:text-gray-900 font-medium underline" href="{{ route('project_creation_page', [
                   'course_id' => $course->id,
                   'lesson_id' => $lesson->id
-                ]) }}">Create Project</a>
+                ]) }}">Create New Project</a>
                 <button class="text-red-700 hover:text-red-900 font-medium underline" type="submit">Delete</button>
               </form>
             @endif
