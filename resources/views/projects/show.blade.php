@@ -143,7 +143,7 @@
                     <hr class="border-b-2 mb-5">
 
                     <div class="flex flex-col gap-1 mb-5">
-                        <label for="upload_title">Title</label>
+                        <label for="upload_title">Title (*)</label>
                         <input class="rounded outline-none border border-gray-700 p-2" type="text" name="upload_title"
                             id="upload_title" value="{{ $upload->title ?? null }}">
                     </div>
@@ -168,6 +168,11 @@
                                 Add</div>
                         </div>
                         <div id="file-create-field" class="flex flex-col gap-3 min-h-[50px]"></div>
+                        @if ($errors->any())
+                            @if ($errors->has('upload_file.*'))
+                                <div class="text-red-500 font-semibold mt-2">Some file is too big or does not have a valid format</div>
+                            @endif
+                        @endif
                     </div>
 
                     {{-- Links --}}
@@ -179,10 +184,29 @@
                                 Add</div>
                         </div>
                         <div id="link-create-field" class="flex flex-col gap-3 min-h-[50px]"></div>
+                        @if ($errors->any())
+                            @if ($errors->has('upload_link.*'))
+                                <div class="text-red-500 font-semibold mt-2">The links must be valid URL's</div>
+                            @endif
+                        @endif
                     </div>
                 </div>
 
-                <div class="flex mt-5">
+                <div class="flex items-end mt-5">
+                    @if ($upload !== null)
+                        {{-- Errors --}}
+                        @if ($errors->any())
+                            @if (!($errors->has('upload_link.*') || $errors->has('upload_file.*')))
+                                <p class="text-red-500 font-semibold mr-auto inline-block">{{ $errors->first() }}</p>
+                            @endif
+                        @endif
+                        @if (session('success_upload'))
+                            <p class="text-green-500 font-semibold mr-auto inline-block">{{ session('success_upload') }}</p>
+                        @endif
+                        @if (session('success_delete'))
+                            <p class="text-green-500 font-semibold mr-auto inline-block">{{ session('success_delete') }}</p>
+                        @endif
+                    @endif
                     <button
                         class="transition ease-in-out duration-200 inline-block ml-auto border border-orange-700 bg-orange-300 font-semibold text-orange-700 p-2 px-5 rounded-md cursor-pointer hover:bg-orange-400"
                         type="submit">Upload</button>
@@ -275,22 +299,6 @@
                     @endif
                 </div>
             </div>
-            @if ($upload !== null)
-                {{-- Errors --}}
-                @if ($errors->any())
-                    {{-- File or link error --}}
-                    @if ($errors->has('upload_link.*') || $errors->has('upload_file.*'))
-                        @if ($errors->has('upload_link.*'))
-                            <div class="alert alert-danger">The links must be valid URL's</div>
-                        @endif
-                        @if ($errors->has('upload_file.*'))
-                            <div class="alert alert-danger">Some file is too big</div>
-                        @endif
-                    @else
-                        <div>{{ $errors->first() }}</div>
-                    @endif
-                @endif
-            @endif
         </div>
 
         {{-- Files --}}

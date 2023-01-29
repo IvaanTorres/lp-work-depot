@@ -55,9 +55,7 @@ class UserController extends Controller
         /* Find the user in the database to see if it exists */
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('courses_list_page'))
-                ->with('username', Auth::user()->name);
-        }else{
+            return redirect()->intended(route('courses_list_page'));
         }
  
         return back()->withErrors([
@@ -70,7 +68,7 @@ class UserController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login_page');
+        return redirect()->route('login_page')->with('logout_info', 'You have been logged out');
     }
     
 }

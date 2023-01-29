@@ -25,7 +25,7 @@ class UploadController extends Controller
         // Delete the upload content
         $document->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success_delete', 'Upload content deleted successfully!');
     }
 
     public function download_file(Request $request, $course_id, $lesson_id, $project_id, $file_id){
@@ -97,6 +97,7 @@ class UploadController extends Controller
         return back()
             ->with('course_id', $course_id)
             ->with('lesson_id', $lesson_id)
-            ->with('project_id', $project_id);
+            ->with('project_id', $project_id)
+            ->with('success_upload', 'Upload successful!');
     }
 }
