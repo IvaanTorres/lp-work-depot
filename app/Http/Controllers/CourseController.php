@@ -21,7 +21,7 @@ class CourseController extends Controller
         // Search by name
         if($request->search){
             $request->validate([
-                'search' => ['regex:/^[a-zA-ZÀ-ÿ\ ]+$/','max:50','min:3']
+                'search' => ['regex:/^[a-zA-ZÀ-ÿ\ ]+$/','max:50','min:1']
             ]);
 
             $students = User::getUsersOfCourse($course_id, Roles::Student)

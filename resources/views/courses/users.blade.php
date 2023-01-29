@@ -83,7 +83,7 @@
 
         searchField.addEventListener('input', () => {
             // Min 3 chars to use the search bar
-            if (searchField.value.length > 3) {
+            if (searchField.value.length > 0) {
                 searchButton.disabled = false;
             } else {
                 searchButton.disabled = true;
