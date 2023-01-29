@@ -99,7 +99,7 @@
     <div class="flex flex-col gap-3">
         @forelse ($students as $student)
             <div class="flex items-center justify-between gap-5 font-semibold border border-orange-600 bg-orange-100 p-3 rounded-md">
-                <div class="flex gap-10">
+                <div class="flex gap-10 items-center">
                   <p class="inline-flex w-[400px]" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;">
                     {{ $student->name }} <span class="font-normal">- {{ $student->email }}</span>
                   </p>

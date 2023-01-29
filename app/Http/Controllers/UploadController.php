@@ -64,8 +64,6 @@ class UploadController extends Controller
         $filled_files = array_values(get_object_vars((object) array_filter($request->file('upload_file') ?? [], fn($file) => !empty($file))));
 
         if(sizeof($filled_links) > 0){
-            // Delete links on db
-
             foreach($filled_links as $link){
                 // Create the link instance
                 $new_uploadable_link = new LinkUpload();
@@ -87,7 +85,8 @@ class UploadController extends Controller
                 // Create the file instance
                 $new_uploadable_file = new FileUpload();
                 $file_path = $file->store($directory_path);
-                // dd($file_path);
+
+                $new_uploadable_file->title = $file->getClientOriginalName();
                 $new_uploadable_file->file_url = $file_path;
                 $new_uploadable_file->save();
                 // // // // Associate the upload with the file
