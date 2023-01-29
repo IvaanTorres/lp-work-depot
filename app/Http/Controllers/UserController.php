@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Termwind\Components\Dd;
 
 class UserController extends Controller
 {   
@@ -23,12 +24,16 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
+            'is_teacher' => ['nullable'],
         ]);
- 
+
         $new_user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_id' => $request->is_teacher
+                ? Role::where('value', Roles::Teacher)->first()->id 
+                : Role::where('value', Roles::Student)->first()->id,
         ]);
  
         /* Create and log the user in the application */

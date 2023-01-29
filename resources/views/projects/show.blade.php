@@ -76,18 +76,17 @@
 
         {{-- Just student --}}
         @if (Auth::user()->hasRole(App\Enums\Roles::Student->value))
-          @if (Auth::user()->marks->firstWhere('project_id', $project->id)->mark !== null)
-            <div class="relative inline-block mt-5">
-              <svg class="round" viewbox="0 0 100 100" width="80" height="80" data-percent="{{
-                Auth::user()->marks->firstWhere('project_id', $project->id)->mark * 100 / 20
-              }}">
-                <circle cx="50" cy="50" r="40" /> 
-              </svg>
-              <p class="mark-value text-orange-500 font-semibold">20/20</p>
-            </div>
-          @else
-            <p class="text-red-500 font-semibold">Not graded yet</p>
-          @endif
+            @if (Auth::user()->marks->firstWhere('project_id', $project->id) !== null)
+                <div class="relative inline-block mt-5">
+                    <svg class="round" viewbox="0 0 100 100" width="80" height="80"
+                        data-percent="{{ (Auth::user()->marks->firstWhere('project_id', $project->id)->mark * 100) / 20 }}">
+                        <circle cx="50" cy="50" r="40" />
+                    </svg>
+                    <p class="mark-value text-orange-500 font-semibold">20/20</p>
+                </div>
+            @else
+                <p class="text-red-500 font-semibold mt-5">Not graded yet</p>
+            @endif
         @endif
     </div>
 
@@ -190,11 +189,11 @@
                 </div>
             </form>
 
-            @if ($upload !== null)
-                <div class="flex flex-col">
-                    <h4 class="mb-2 text-md font-semibold">Uploaded Content</h4>
-                    <hr class="border-b-2 mb-5">
-                    <div class="bg-gray-100 p-5 flex-auto border border-gray-800">
+            <div class="flex flex-col">
+                <h4 class="mb-2 text-md font-semibold">Uploaded Content</h4>
+                <hr class="border-b-2 mb-5">
+                <div class="bg-gray-100 p-5 flex-auto border border-gray-800">
+                    @if ($upload !== null)
                         {{-- Files --}}
                         <div class="mb-5">
                             <h4 class="font-semibold text-md">Files</h4>
@@ -273,9 +272,10 @@
                                 @endforeach
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
-
+            </div>
+            @if ($upload !== null)
                 {{-- Errors --}}
                 @if ($errors->any())
                     {{-- File or link error --}}
@@ -365,14 +365,14 @@
     @endif
 
     <script>
-      $(document).ready(function() {
-        var $round = $('.round'),
-            roundRadius = $round.find('circle').attr('r'),
-            roundPercent = $round.data('percent'),
-            roundCircum = 2 * roundRadius * Math.PI,
-            roundDraw = roundPercent * roundCircum / 100
-        $round.css('stroke-dasharray', roundDraw  + ' 999')
-      })
+        $(document).ready(function() {
+            var $round = $('.round'),
+                roundRadius = $round.find('circle').attr('r'),
+                roundPercent = $round.data('percent'),
+                roundCircum = 2 * roundRadius * Math.PI,
+                roundDraw = roundPercent * roundCircum / 100
+            $round.css('stroke-dasharray', roundDraw + ' 999')
+        })
     </script>
 
 @endsection

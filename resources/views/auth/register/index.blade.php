@@ -6,7 +6,7 @@
 @section('content')
     <div class="flex justify-center items-center h-full w-full">
         {{-- Card --}}
-        <div class="flex flex-col shadow-xl rounded-xl overflow-hidden w-[350px] h-[500px]">
+        <div class="flex flex-col shadow-xl rounded-xl overflow-hidden w-[350px] h-[550px]">
             <div class="flex-inital p-10 bg-orange-500 ">
                 <h3 class="text-center font-bold text-2xl text-white">Register</h3>
             </div>
@@ -35,6 +35,12 @@
                             <label class="text-sm text-gray-600" for="password">Password</label>
                             <input class="border-b-2 border-b-orange-600 outline-none py-2" id="password" type="password"
                                 name="password" required placeholder="Type">
+                        </div>
+                        
+                        {{-- Register as teacher --}}
+                        <div class="flex gap-3">
+                            <label class="text-sm text-gray-600" for="is_teacher">Register as teacher?</label>
+                            <input type="checkbox" name="is_teacher" id="is_teacher">
                         </div>
 
                         {{-- Errors --}}

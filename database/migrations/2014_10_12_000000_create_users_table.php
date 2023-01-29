@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             /* $table->enum('role', ['student', 'teacher'])->default('student'); */
             
-            $table->unsignedBigInteger('role_id')->default(1);
+            $table->bigInteger('role_id');
             $table->rememberToken();
             $table->timestamps();
         });
