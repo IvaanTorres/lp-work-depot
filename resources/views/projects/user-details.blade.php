@@ -1,61 +1,162 @@
 @extends('base')
-
+{{--  --}}
 @section('title', 'Upload Details Of The Student')
 
 @section('content')
-  <h1>{{$project->title}} (Proyecto)</h1>
-  <p>{{$project->description}}</p>
-  <hr>
-  <h2>Mark</h2>
-  <p>User: {{$user->name}}</p>
-  <p>Email: {{$user->email}}</p>
-  <p>Mark:</p>
-  <form action="{{route('project_evaluate', [
-    'course_id' => $course_id,
-    'lesson_id' => $lesson_id,
-    'project_id' => $project->id,
-    'user_id' => $user->id,
-  ])}}" method="POST">
-    @csrf
-    @method('PUT')
-    <input type="number" name="mark" value="{{$user->marks->firstWhere('project_id', $project->id)->mark ?? ''}}">
-    <button type="submit">Update mark</button>
-  </form>
-  
-  <h2>Uploads</h2>
-  {{-- Uploaded files and links --}}
-  {{-- Files --}}
-  @forelse ($user->uploads as $upload)
-    <h4>Files</h4>
-    @forelse ($upload->files as $file)
-        <div id="file-wrapper">
-          <img src="{{asset('assets/img/document-icon.png')}}" alt="Photo" width="250px" height="250px" />
-          <form action="{{route('upload_file_download' , [
+
+  <style>
+    .download-icon {
+        display: none;
+    }
+
+    .file-actions-wrapper {
+        width: 100%;
+        z-index: 999;
+    }
+
+    .file-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: none;
+    }
+
+    .file {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    .file-item:hover>div>.download-icon {
+        display: block;
+    }
+
+    .file-item:hover>.file-title {
+        display: block;
+    }
+
+    .file-item:hover::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+  </style>
+
+  <div class="mb-10">
+    <h3 class="text-4xl font-semibold">{{ $project->title }}</h3>
+    <p class="mt-3">{{ $project->description }}</p>
+    
+    <div class="mt-20">
+      <h3 class="text-2xl font-semibold">Student Info</h3>
+      <hr class="border-b-2 mb-5">
+      
+      <div class="flex flex-col gap-3">
+        <div>
+          <p class="font-semibold text-sm">User</p>
+          <p class="font-semibold">{{ucfirst($user->name)}}</p>
+        </div>
+        <div>
+          <p class="font-semibold text-sm">Email</p>
+          <a class="text-orange-500 font-semibold" href="mailto:{{$user->email}}">{{$user->email}}</a>
+        </div>
+        <div>
+          <p class="font-semibold text-sm">Mark (MAX: 20)</p>
+          <form action="{{route('project_evaluate', [
             'course_id' => $course_id,
             'lesson_id' => $lesson_id,
             'project_id' => $project->id,
-            'file_id' => $file->id,
+            'user_id' => $user->id,
           ])}}" method="POST">
             @csrf
-            <input type="submit" value="Download">
+            @method('PUT')
+            <input class="rounded outline-none border border-gray-700 p-2 mt-2 mr-2" type="number" name="mark" value="{{$user->marks->firstWhere('project_id', $project->id)->mark ?? ''}}">
+            <button class="transition ease-in-out duration-200 inline-block ml-auto border border-orange-700 bg-orange-300 font-semibold text-orange-700 p-2 px-5 rounded-md cursor-pointer hover:bg-orange-400" type="submit">Update</button>
           </form>
         </div>
-    @empty
-      <p>No hay archivos</p>
-    @endforelse
-
-    {{-- Links --}}
-    <h4>Links</h4>
-    @forelse ($upload->links as $link)
-      <div id="link-wrapper">
-        <p>{{$link->link}}</p>
       </div>
-    @empty
-      <p>No hay links</p>
-    @endforelse
-  @empty
-    <p>No hay uploads</p>
-  @endforelse
+    </div>
+  </div>
+  
+  <div>
+    <h3 class="text-2xl font-semibold">Upload Details</h3>
+    <hr class="border-b-2 mb-5">
 
-  <div style="width: 100%; height: 3px; background: black"></div>
+    <div class="grid grid-cols-2 gap-10">
+      <div>
+          <h4 class="mb-2 text-md font-semibold">Info</h4>
+          <hr class="border-b-2 mb-5">
+      
+          <div class="flex flex-col gap-1 mb-5">
+              <p class="font-semibold text-md">Title</p>
+              <p>{{ $upload->title ?? 'There\'s no title set' }}</p>
+          </div>
+      
+          <div class="flex flex-col gap-1 mb-5">
+            <p class="font-semibold text-md">Description</p>
+            <p>{{ $upload->description ?? 'There\'s no description set' }}</p>
+          </div>
+      </div>
+      
+      {{-- Files --}}
+      <div>
+        <h4 class="mb-2 text-md font-semibold">Uploaded Content</h4>
+        <hr class="border-b-2 mb-5">
+
+        <div class="bg-gray-100 p-3 border border-gray-800">
+          @forelse ($user->uploads->where('project_id', $project->id) as $upload)
+            <div class="mb-5">
+              <h4 class="font-semibold text-md">Files</h4>
+              <div class="grid grid-cols-4 gap-3 mt-3">
+                @forelse ($upload->files as $file)
+                    <div id="file-wrapper" class="file-item transition ease-in-out duration-200 relative overflow-hidden">
+                      <p class="file-title w-full text-sm text-white font-semibold hidden absolute top-3 left-0 px-2 z-50">
+                        {{ $file->title ?? null }}
+                      </p>
+                      <img class="file w-28 h-28" src="{{ asset('assets/img/uploaded-file.png') }}" alt="Photo" />
+                      <div class="file-actions-wrapper absolute bottom-0 right-0 flex">
+                        <form class="download-icon w-full" action="{{route('upload_file_download' , [
+                          'course_id' => $course_id,
+                          'lesson_id' => $lesson_id,
+                          'project_id' => $project->id,
+                          'file_id' => $file->id,
+                        ])}}" method="POST">
+                          @csrf
+                          <button class="p-2 w-full bg-gray-500 text-white cursor-pointer hover:bg-gray-600" type="submit">
+                            <i class="fa-solid fa-download"></i>
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                @empty
+                  <p>There's no files</p>
+                @endforelse
+              </div>
+            </div>
+          
+            {{-- Links --}}
+            <div>
+              <h4 class="font-semibold text-md mb-2">Links</h4>
+              <div class="flex flex-col gap-3">
+                @forelse ($upload->links as $link)
+                  <div id="link-wrapper" class="bg-orange-100 border border-orange-600 p-3 flex justify-between rounded-md">
+                    <a class="font-semibold underline" href="{{ $link->link }}"
+                      target="_blank">{{ $link->link }}</a>
+                  </div>
+                @empty
+                  <p>There's no links</p>
+                @endforelse
+              </div>
+            </div>
+          @empty
+            <p>No hay uploads</p>
+          @endforelse
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection

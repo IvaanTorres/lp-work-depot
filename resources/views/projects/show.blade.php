@@ -82,7 +82,7 @@
                         data-percent="{{ (Auth::user()->marks->firstWhere('project_id', $project->id)->mark * 100) / 20 }}">
                         <circle cx="50" cy="50" r="40" />
                     </svg>
-                    <p class="mark-value text-orange-500 font-semibold">20/20</p>
+                    <p class="mark-value text-orange-500 font-semibold">{{Auth::user()->marks->firstWhere('project_id', $project->id)->mark}}/20</p>
                 </div>
             @else
                 <p class="text-red-500 font-semibold mt-5">Not graded yet</p>

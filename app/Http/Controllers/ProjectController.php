@@ -57,7 +57,7 @@ class ProjectController extends Controller
     public function getUserDetails($course_id, $lesson_id, $project_id, $user_id){
         $user = User::findOrFail($user_id);
         $project = Project::findOrFail($project_id);
-        // dd($user->uploads);
+        
         return view('projects.user-details', [
             'course_id' => $course_id,
             'lesson_id' => $lesson_id,
