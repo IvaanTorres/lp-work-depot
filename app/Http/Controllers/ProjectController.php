@@ -126,11 +126,7 @@ class ProjectController extends Controller
         $project->lesson()->associate($lesson_id);
         $project->save();
 
-        return redirect()->route('project_details_page', [
-            'course_id' => $course_id,
-            'lesson_id' => $lesson_id,
-            'project_id' => $project->id,
-        ])->with('success', 'Project created successfully');
+        return redirect()->route('course_details_page', $course_id)->with('project_create_info', 'Project created successfully');
     }
 
     public function edit($course_id, $lesson_id, $project_id){
@@ -151,18 +147,14 @@ class ProjectController extends Controller
 
         $project = Project::findOrFail($project_id);
         $project->update($request->all());
-        return redirect()->route('project_details_page', [
-            'course_id' => $course_id,
-            'lesson_id' => $lesson_id,
-            'project_id' => $project->id,
-        ])->with('success', 'Project updated successfully');
+        return redirect()->route('course_details_page', $course_id)->with('project_update_info', 'Project updated successfully');
     }
 
     public function destroy($course_id, $lesson_id, $project_id){
         $project = Project::findOrFail($project_id);
         $project->delete();
         Storage::deleteDirectory('public/uploads/project_'.$project_id);
-        return redirect()->route('course_details_page', $course_id)->with('success', 'Project deleted successfully');
+        return redirect()->route('course_details_page', $course_id)->with('project_delete_info', 'Project deleted successfully');
     }
 
 }

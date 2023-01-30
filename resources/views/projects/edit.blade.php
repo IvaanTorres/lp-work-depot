@@ -14,22 +14,23 @@
   ])}}" method="POST">
     @csrf
     @method('PUT')
-
-    {{-- Errors --}}
-    @if ($errors->any())
-      <div>{{ $errors->first() }}</div>
-    @endif
     
     <input type="hidden" name="lesson_id" value="{{$lesson_id}}">
 
     <div class="flex flex-col max-w-lg gap-1 mb-5">
-      <label for="title">Title</label>
+      <label for="title">Title (*)</label>
       <input class="rounded outline-none border border-gray-700 p-2" type="text" name="title" value="{{$project->title}}">
+      @error('title')
+        <div class="text-red-500 font-semibold mt-2">{{ $message }}</div>
+      @enderror
     </div>
 
     <div class="flex flex-col max-w-lg gap-1 mb-5">
-      <label for="description">Description</label>
+      <label for="description">Description (*)</label>
       <textarea class="rounded outline-none border border-gray-700 p-2" type="text" name="description" cols="30" rows="10">{{$project->description}}</textarea>
+      @error('description')
+        <div class="text-red-500 font-semibold mt-2">{{ $message }}</div>
+      @enderror
     </div>
 
     <div class="flex mt-5">
