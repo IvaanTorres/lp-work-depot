@@ -47,10 +47,10 @@ class CourseController extends Controller
 
         // Check if the user is already enrolled in the course
         if($course->users->contains($user)){
-            return redirect()->back()->withErrors(['alreadyEnrolled' => 'User is already enrolled in this course']);
+            return redirect()->back()->withErrors(['alreadyEnrolled' => 'User is already enrolled in this course'])->withInput();
         }else{
             $course->users()->attach($user);
-            return redirect()->back()->with('user_link_info', 'User linked successfully');
+            return redirect()->back()->with('user_add_info', 'User enrolled successfully');
         }
     }
 
@@ -59,7 +59,7 @@ class CourseController extends Controller
         $user = User::findOrFail($user_id);
         $course->users()->detach($user);
 
-        return redirect()->route('course_users_page', $course_id)->with('user_unlink_info', 'User unlinked successfully');
+        return redirect()->route('course_users_page', $course_id)->with('user_remove_info', 'User removed successfully');
     }
 
     /* ---------------------------------- CRUD ---------------------------------- */

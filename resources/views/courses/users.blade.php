@@ -3,16 +3,17 @@
 @section('title', 'Linked Students')
 
 @section('content')
-    @if (session('user_unlink_info'))
+    @if (session('user_add_info'))
         <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
             <strong class="font-bold">Success!</strong>
-            <span class="block sm:inline">{{session('user_unlink_info')}}</span>
+            <span class="block sm:inline">{{session('user_add_info')}}</span>
         </div>
     @endif
-    @if (session('user_link_info'))
+
+    @if (session('user_remove_info'))
         <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
             <strong class="font-bold">Success!</strong>
-            <span class="block sm:inline">{{session('user_link_info')}}</span>
+            <span class="block sm:inline">{{session('user_remove_info')}}</span>
         </div>
     @endif
 
@@ -62,6 +63,9 @@
       
         {{-- Errors --}}
         @error('user_email')
+            <div class="mt-2 text-red-500 font-semibold">{{ $message }}</div>
+        @enderror
+        @error('alreadyEnrolled')
             <div class="mt-2 text-red-500 font-semibold">{{ $message }}</div>
         @enderror
       </form>

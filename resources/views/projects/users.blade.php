@@ -3,6 +3,13 @@
 @section('title', 'Students for this project')
 
 @section('content')
+    @if (session('user_update_mark_info'))
+        <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline">{{session('user_update_mark_info')}}</span>
+        </div>
+    @endif
+
     <h3 class="text-4xl font-semibold">Students for this project</h3>
 
     <div class="mt-10 mb-5">
@@ -83,18 +90,13 @@
                 <div class="text-red-500 font-semibold mt-2">{{ $message }}</div>
             @enderror
         </form>
-
-        @if (request()->search)
-            <a
-                href="{{ route('project_users_page', [
-                    'course_id' => $course_id,
-                    'lesson_id' => $lesson_id,
-                    'project_id' => $project_id,
-                    'order_by' => request()->order_by,
-                    'order' => request()->order,
-                ]) }}">Clear</a>
-        @endif
     </div>
+
+    @error('mark')
+        <div class="mb-2">
+            <span class="text-red-500 font-semibold">{{ $message }}</span>
+        </div>
+    @enderror
 
     <div class="flex flex-col gap-3">
         @forelse ($students as $student)
@@ -120,11 +122,6 @@
                           <input class="p-1 outline-none rounded font-normal" type="number" name="mark" step="0.00001"
                               value="{{ $student->marks->firstWhere('project_id', $project_id)->mark ?? '' }}">
                   
-                          {{-- Errors --}}
-                          @if ($errors->any())
-                              <div>{{ $errors->first() }}</div>
-                          @endif
-                  
                           <button class="ml-2 h-full inline-block bg-orange-500 hover:bg-orange-600 transition-all ease-in-out duration-200 text-orange-100 py-1 px-3 rounded-md font-semibold" type="submit">Update mark</button>
                       </form>
                   </div>
@@ -141,7 +138,7 @@
                     uploads</a>
             </div>
         @empty
-            <div>No students</div>
+            <div>There's no enrolled students yet</div>
         @endforelse
     </div>
 
@@ -151,7 +148,7 @@
 
         searchField.addEventListener('input', () => {
             // Min 3 chars to use the search bar
-            if (searchField.value.length > 3) {
+            if (searchField.value.length > 1) {
                 searchButton.disabled = false;
             } else {
                 searchButton.disabled = true;
