@@ -24,9 +24,9 @@ class LessonController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'project-title' => 'required|array',
-            'project-title.*' => 'nullable|string',
+            'project-title.*' => 'nullable|required_with:project-description.*|string',
             'project-description' => 'required|array',
-            'project-description.*' => 'nullable|required_with:project-title.*|string', // lesson-description.* is required if lesson-title.* is not null
+            'project-description.*' => 'nullable|string',
         ]);
         
         $lesson = new Lesson();
@@ -41,7 +41,7 @@ class LessonController extends Controller
                 'description' => $request->input('project-description')[$key],
             ]);
         }
-        return redirect()->route('course_details_page', $course_id)->with('success', 'Lesson created successfully');
+        return redirect()->route('course_details_page', $course_id)->with('lesson_create_info', 'Lesson created successfully');
     }
 
     public function edit($course_id, $lesson_id){
@@ -57,9 +57,9 @@ class LessonController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'project-title' => 'required|array',
-            'project-title.*' => 'nullable|string',
+            'project-title.*' => 'nullable|required_with:project-description.*|string',
             'project-description' => 'required|array',
-            'project-description.*' => 'nullable|required_with:project-title.*|string', // lesson-description.* is required if lesson-title.* is not null
+            'project-description.*' => 'nullable|string',
         ]);
 
         $lesson = Lesson::find($lesson_id);
@@ -71,13 +71,13 @@ class LessonController extends Controller
                 'description' => $request->input('project-description')[$key],
             ]);
         }
-        return redirect()->route('course_details_page', $lesson->course->id)->with('success', 'Lesson updated successfully');
+        return redirect()->route('course_details_page', $lesson->course->id)->with('lesson_update_info', 'Lesson updated successfully');
     }
 
     public function destroy($course_id, $lesson_id){
         $lesson = Lesson::find($lesson_id);
         $lesson->delete();
-        return back()->with('success', 'Lesson deleted successfully');
+        return back()->with('lesson_delete_info', 'Lesson deleted successfully');
     }
 
 }

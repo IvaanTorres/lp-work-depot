@@ -17,6 +17,27 @@
     </div>
   @endif
 
+  @if (session('lesson_create_info'))
+    <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Success!</strong>
+      <span class="block sm:inline">{{session('lesson_create_info')}}</span>
+    </div>
+  @endif
+
+  @if (session('lesson_update_info'))
+    <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Success!</strong>
+      <span class="block sm:inline">{{session('lesson_update_info')}}</span>
+    </div>
+  @endif
+  
+  @if (session('lesson_delete_info'))
+    <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Success!</strong>
+      <span class="block sm:inline">{{session('lesson_delete_info')}}</span>
+    </div>
+  @endif
+
   <div class="mb-16">
     <h3 class="text-4xl font-semibold">{{$course->title}}</h3>
     <p class="mt-5">{{$course->description}}</p>

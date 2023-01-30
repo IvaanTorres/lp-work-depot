@@ -14,23 +14,20 @@
     @csrf
     @method('PUT')
 
-    {{-- Errors --}}
-    @if ($errors->any())
-      @if ($errors->has('project-description.*'))
-        <div>The project description must be a text and is mandatory if the title is set</div>
-      @else
-        <div>{{ $errors->first() }}</div>
-      @endif
-    @endif
-
     <div class="flex flex-col max-w-lg gap-1 mb-5">
-      <label for="title">Title</label>
+      <label for="title">Title (*)</label>
       <input class="rounded outline-none border border-gray-700 p-2" type="text" name="title" id="title" value="{{ $lesson->title }}">
+      @error('title')
+        <div class="text-red-500 font-semibold mt-2">{{ $message }}</div>
+      @enderror
     </div>
 
     <div class="flex flex-col max-w-lg gap-1 mb-5">
-      <label for="description">Description</label>
+      <label for="description">Description (*)</label>
       <textarea class="rounded outline-none border border-gray-700 p-2" name="description" id="description" cols="30" rows="10">{{ $lesson->description }}</textarea>
+      @error('description')
+        <div class="text-red-500 font-semibold mt-2">{{ $message }}</div>
+      @enderror
     </div>
 
     <h4 class="mt-10 mb-2 text-2xl font-semibold">Projects</h4>
@@ -41,7 +38,7 @@
         @foreach ($lesson->projects as $project)
           <div class="project-container bg-gray-300 border border-gray-400 min-h-[300px] p-5 flex flex-col rounded-md">
             <div class="flex flex-col gap-1 mb-5 max-w-lg">
-              <label for="project-title[]">Title</label>
+              <label for="project-title[]">Title (*)</label>
               <input class="rounded outline-none p-2" type="text" name="project-title[]" value="{{ $project->title }}">
             </div>
             <div class="flex flex-col gap-1 mb-5 max-w-lg h-[200px]">
@@ -54,7 +51,12 @@
           </div>
         @endforeach
       </div>
-      <div id="project-create-button" class="transition ease-in-out duration-200 inline-block bg-gray-300 border border-gray-700 text-gray-700 p-2 px-5 rounded-md cursor-pointer hover:bg-gray-400">Add</div>
+      <div class="flex justify-between gap-3 items-end">
+        <div id="project-create-button" class="transition ease-in-out duration-200 inline-block bg-gray-300 border border-gray-700 text-gray-700 p-2 px-5 rounded-md cursor-pointer hover:bg-gray-400">Add</div>
+        @error('project-title.*')
+          <div class="text-red-500 font-semibold mt-2">The projects titles are mandatory if their description is set</div>
+        @enderror
+      </div>
     </div>
     
     <div class="flex mt-5">
@@ -86,11 +88,11 @@
       const projectTemplate = `
         <div class="bg-gray-300 border border-gray-400 min-h-[300px] p-5 flex flex-col rounded-md">
           <div class="flex flex-col gap-1 mb-5 max-w-lg">
-            <label for="project-title[]">Project Title</label>
+            <label for="project-title[]">Title (*)</label>
             <input class="rounded outline-none p-2" type="text" name="project-title[]">
           </div>
           <div class="flex flex-col gap-1 mb-5 max-w-lg h-[200px]">
-            <label for="project-description[]">Project Description</label>
+            <label for="project-description[]">Description</label>
             <textarea class="rounded outline-none p-2" name="project-description[]" cols="30" rows="10"></textarea>
           </div>
           <div class="flex mt-5">
