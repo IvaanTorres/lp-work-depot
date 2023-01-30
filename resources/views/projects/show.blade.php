@@ -222,7 +222,7 @@
                         <div class="mb-5">
                             <h4 class="font-semibold text-md">Files</h4>
                             <div class="grid grid-cols-4 gap-3 mt-3">
-                                @foreach ($upload->files as $file)
+                                @forelse ($upload->files as $file)
                                     <div class="file-item transition ease-in-out duration-200 relative overflow-hidden"
                                         id="file-wrapper">
                                         <p
@@ -266,7 +266,9 @@
                                             </form>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <p>There's no files</p>
+                                @endforelse
                             </div>
                         </div>
 
@@ -274,7 +276,7 @@
                         <div>
                             <h4 class="font-semibold text-md mb-2">Links</h4>
                             <div class="flex flex-col gap-3">
-                                @foreach ($upload->links as $link)
+                                @forelse ($upload->links as $link)
                                     <div id="link-wrapper"
                                         class="bg-orange-100 border border-orange-600 p-3 flex justify-between rounded-md">
                                         <a class="font-semibold underline" href="{{ $link->link }}"
@@ -293,9 +295,13 @@
                                             <input class="cursor-pointer" type="submit" value="Delete">
                                         </form>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <p>There's no links</p>
+                                @endforelse
                             </div>
                         </div>
+                    @else
+                        <p>There's no uploaded content</p>
                     @endif
                 </div>
             </div>

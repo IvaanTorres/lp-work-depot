@@ -3,6 +3,20 @@
 @section('title', 'Course Details')
 
 @section('content')
+  @if (session('course_create_info'))
+    <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Success!</strong>
+      <span class="block sm:inline">{{session('course_create_info')}}</span>
+    </div>
+  @endif
+
+  @if (session('course_update_info'))
+    <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Success!</strong>
+      <span class="block sm:inline">{{session('course_update_info')}}</span>
+    </div>
+  @endif
+
   <div class="mb-16">
     <h3 class="text-4xl font-semibold">{{$course->title}}</h3>
     <p class="mt-5">{{$course->description}}</p>
@@ -28,7 +42,7 @@
     <h4 class="text-3xl font-semibold">Lessons</h4>
     <hr class="my-3 border-t-2">
     <div class="grid grid-cols-1 gap-10">
-      @foreach ($course->lessons as $lesson)
+      @forelse ($course->lessons as $lesson)
         <div>
           <div>
             <p class="text-xl mb-1">{{ $lesson->title }}</p>
@@ -95,7 +109,9 @@
             </div>
           @endif
         </div>
-      @endforeach
+      @empty
+        <p>There's no lessons yet</p>
+      @endforelse
     </div>
   </div>
 

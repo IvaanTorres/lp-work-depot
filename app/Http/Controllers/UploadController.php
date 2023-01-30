@@ -13,7 +13,8 @@ class UploadController extends Controller
 
     public function __construct(){
         $this->middleware('auth');
-        $this->middleware('roles:teacher', ['only' => ['download_file']]);
+        $this->middleware('roles:student,teacher', ['except' => ['download_file']]);
+        // $this->middleware('roles:teacher', ['except' => ['destroy', 'download_file']]);
     }
     
     public function destroy(Request $request, $course_id, $lesson_id, $project_id, $document_id){

@@ -50,7 +50,7 @@ class CourseController extends Controller
             return redirect()->back()->withErrors(['alreadyEnrolled' => 'User is already enrolled in this course']);
         }else{
             $course->users()->attach($user);
-            return redirect()->back()->with('success', 'User linked successfully');
+            return redirect()->back()->with('user_link_info', 'User linked successfully');
         }
     }
 
@@ -59,7 +59,7 @@ class CourseController extends Controller
         $user = User::findOrFail($user_id);
         $course->users()->detach($user);
 
-        return redirect()->route('course_users_page', $course_id)->with('success', 'User unlinked successfully');
+        return redirect()->route('course_users_page', $course_id)->with('user_unlink_info', 'User unlinked successfully');
     }
 
     /* ---------------------------------- CRUD ---------------------------------- */
@@ -92,9 +92,9 @@ class CourseController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'lesson-title' => 'required|array',
-            'lesson-title.*' => 'nullable|string',
+            'lesson-title.*' => 'nullable|required_with:lesson-description.*|string',
             'lesson-description' => 'required|array',
-            'lesson-description.*' => 'nullable|required_with:lesson-title.*|string', // lesson-description.* is required if lesson-title.* is not null
+            'lesson-description.*' => 'nullable|string', // lesson-description.* is required if lesson-title.* is not null
         ]);
 
         $course = Course::create($request->all());
@@ -106,7 +106,7 @@ class CourseController extends Controller
             ]);
         }
 
-        return redirect()->route('course_details_page', $course->id)->with('success', 'Course created successfully');
+        return redirect()->route('course_details_page', $course->id)->with('course_create_info', 'Course created successfully');
     }
 
     public function edit($course_id){
@@ -127,9 +127,9 @@ class CourseController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'lesson-title' => 'required|array',
-            'lesson-title.*' => 'nullable|string',
+            'lesson-title.*' => 'nullable|required_with:lesson-description.*|string',
             'lesson-description' => 'required|array',
-            'lesson-description.*' => 'nullable|required_with:lesson-title.*|string', // lesson-description.* is required if lesson-title.* is not null
+            'lesson-description.*' => 'nullable|string',
         ]);
 
         $course = Course::find($course_id);
@@ -142,7 +142,7 @@ class CourseController extends Controller
             ]);
         }
 
-        return redirect()->route('course_details_page', $course->id)->with('success', 'Course updated successfully');
+        return redirect()->route('course_details_page', $course->id)->with('course_update_info', 'Course updated successfully');
     }
 
     public function destroy($course_id){
@@ -151,7 +151,7 @@ class CourseController extends Controller
         // Check if the teacher is the owner of the course
         if($course->getTeacherById(auth()->user()->id)){
             $course->delete();
-            return redirect()->route('courses_list_page')->with('success', 'Course deleted successfully');
+            return redirect()->route('courses_list_page')->with('course_delete_info', 'Course deleted successfully');
         }else{
             return back()->with('error', 'You are not the owner of this course');
         }

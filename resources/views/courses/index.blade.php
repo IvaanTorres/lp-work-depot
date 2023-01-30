@@ -3,6 +3,12 @@
 @section('title', 'Courses')
 
 @section('content')
+  @if (session('course_delete_info'))
+    <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Success!</strong>
+      <span class="block sm:inline">{{session('course_delete_info')}}</span>
+    </div>
+  @endif
   <div>
     <h3 class="text-4xl font-semibold">Welcome <span class="text-orange-500">{{ucfirst(Auth::user()->name)}}</span> to your personal space ! ✨</h3>
   </div>

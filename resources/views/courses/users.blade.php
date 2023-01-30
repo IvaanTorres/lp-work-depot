@@ -3,6 +3,19 @@
 @section('title', 'Linked Students')
 
 @section('content')
+    @if (session('user_unlink_info'))
+        <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline">{{session('user_unlink_info')}}</span>
+        </div>
+    @endif
+    @if (session('user_link_info'))
+        <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline">{{session('user_link_info')}}</span>
+        </div>
+    @endif
+
     <h3 class="text-4xl font-semibold">Students of this course</h3>
 
     <div>
@@ -44,7 +57,7 @@
         @csrf
 
         <input type="hidden" name="course_id" value="{{ $course_id }}">
-        <input class="border border-gray-600 rounded py-1 px-2 outline-none mr-2" type="text" name="user_email" placeholder="Student email">
+        <input class="border border-gray-600 rounded py-1 px-2 outline-none mr-2" type="email" name="user_email" placeholder="Student email">
         <button class="bg-orange-500 hover:bg-orange-600 transition-all ease-in-out duration-200 text-orange-100 py-1 px-3 rounded-md font-semibold" type="submit">Add</button>
       
         {{-- Errors --}}

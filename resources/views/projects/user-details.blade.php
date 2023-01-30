@@ -153,7 +153,7 @@
               </div>
             </div>
           @empty
-            <p>No hay uploads</p>
+            <p>There's no uploads</p>
           @endforelse
         </div>
       </div>
