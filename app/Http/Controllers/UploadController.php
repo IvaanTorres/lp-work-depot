@@ -27,7 +27,7 @@ class UploadController extends Controller
         // Delete the upload content
         $document->delete();
 
-        return redirect()->back()->with('success_delete', 'Upload content deleted successfully!');
+        return redirect()->back()->with('upload_delete_info', 'Upload content deleted successfully!');
     }
 
     public function download_file(Request $request, $course_id, $lesson_id, $project_id, $file_id){
@@ -41,8 +41,8 @@ class UploadController extends Controller
             'upload_description' => 'nullable|string|max:255',
             'upload_link' => 'nullable|array',
             'upload_link.*' => 'nullable|url',
-            'upload_file' => 'nullable|array',
-            'upload_file.*' => 'nullable|file|max:10240',
+            'upload_file' => 'nullable|array|max:5',
+            'upload_file.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar,7z,txt,mp4,mp3,avi,wmv,mkv,flv,mov,webm,ogg,ogv,svg,svgz,png,jpg,jpeg,gif,ico',
         ]);
 
         $upload = Upload::where('user_id', Auth()->user()->id)->where('project_id', $project_id)->first();
@@ -100,6 +100,6 @@ class UploadController extends Controller
             ->with('course_id', $course_id)
             ->with('lesson_id', $lesson_id)
             ->with('project_id', $project_id)
-            ->with('success_upload', 'Upload successful!');
+            ->with('upload_create_info', 'Upload created/modified successfully!');
     }
 }

@@ -84,7 +84,7 @@ class ProjectController extends Controller
             $mark->project()->associate($project_id);
             $mark->save();
         }
-        return back()->with('user_update_mark_info', 'Mark updated successfully');
+        return back()->with('user_project_update_mark_info', 'Mark updated successfully');
     }
 
     /* ---------------------------------- CRUD ---------------------------------- */

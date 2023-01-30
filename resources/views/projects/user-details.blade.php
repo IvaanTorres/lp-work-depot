@@ -47,6 +47,13 @@
     }
   </style>
 
+  @if (session('user_project_update_mark_info'))
+    <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Success!</strong>
+      <span class="block sm:inline">{{session('user_project_update_mark_info')}}</span>
+    </div>
+  @endif
+
   <div class="mb-10">
     <h3 class="text-4xl font-semibold">{{ $project->title }}</h3>
     <p class="mt-3">{{ $project->description }}</p>
@@ -76,6 +83,9 @@
             @method('PUT')
             <input class="rounded outline-none border border-gray-700 p-2 mt-2 mr-2" type="number" name="mark" value="{{$user->marks->firstWhere('project_id', $project->id)->mark ?? ''}}">
             <button class="transition ease-in-out duration-200 inline-block ml-auto border border-orange-700 bg-orange-300 font-semibold text-orange-700 p-2 px-5 rounded-md cursor-pointer hover:bg-orange-400" type="submit">Update</button>
+            @error('mark')
+              <p class="text-red-500 font-semibold mt-2">{{$message}}</p>
+            @enderror
           </form>
         </div>
       </div>
@@ -153,7 +163,7 @@
               </div>
             </div>
           @empty
-            <p>There's no uploads</p>
+            <p>There's no upload content</p>
           @endforelse
         </div>
       </div>

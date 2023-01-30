@@ -35,7 +35,7 @@
                         @endif
                         {{-- Display logout info message --}}
                         @if (session('logout_info'))
-                            <div class="w-full text-green-600">{{ session('logout_info') }}</div>
+                            <div class="w-full font-semibold text-green-600">{{ session('logout_info') }}</div>
                         @endif
                     </div>
 

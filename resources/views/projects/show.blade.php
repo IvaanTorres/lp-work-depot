@@ -70,6 +70,20 @@
         }
     </style>
 
+    @if (session('upload_create_info'))
+        <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline">{{session('upload_create_info')}}</span>
+        </div>
+    @endif
+    
+    @if (session('upload_delete_info'))
+        <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline">{{session('upload_delete_info')}}</span>
+        </div>
+    @endif
+
     <div class="mb-20">
         <h3 class="text-4xl font-semibold">{{ $project->title }}</h3>
         <p class="mt-3">{{ $project->description }}</p>
@@ -146,6 +160,9 @@
                         <label for="upload_title">Title (*)</label>
                         <input class="rounded outline-none border border-gray-700 p-2" type="text" name="upload_title"
                             id="upload_title" value="{{ $upload->title ?? null }}">
+                        @error('upload_title')
+                            <p class="text-red-500 font-semibold mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="flex flex-col gap-1 mb-5">
@@ -162,17 +179,15 @@
                     {{-- Files --}}
                     <div class="mb-5">
                         <div class="flex justify-between items-center mb-3">
-                            <h4 class="text-md font-semibold">Files</h4>
+                            <h4 class="text-md font-semibold">Files (MAX: 5)</h4>
                             <div id="file-create-button"
                                 class="transition ease-in-out duration-200 inline-block ml-auto border border-gray-700 bg-gray-100 font-semibold text-gray-700 p-2 px-5 rounded-md cursor-pointer hover:bg-gray-200">
                                 Add</div>
                         </div>
                         <div id="file-create-field" class="flex flex-col gap-3 min-h-[50px]"></div>
-                        @if ($errors->any())
-                            @if ($errors->has('upload_file.*'))
-                                <div class="text-red-500 font-semibold mt-2">Some file is too big or does not have a valid format</div>
-                            @endif
-                        @endif
+                        @error('upload_file.*')
+                            <div class="text-red-500 font-semibold mt-2">Some file is too big (MAX: 10MB)</div>
+                        @enderror
                     </div>
 
                     {{-- Links --}}
@@ -184,29 +199,13 @@
                                 Add</div>
                         </div>
                         <div id="link-create-field" class="flex flex-col gap-3 min-h-[50px]"></div>
-                        @if ($errors->any())
-                            @if ($errors->has('upload_link.*'))
-                                <div class="text-red-500 font-semibold mt-2">The links must be valid URL's</div>
-                            @endif
-                        @endif
+                        @error('upload_link.*')
+                            <div class="text-red-500 font-semibold mt-2">The links must be valid URL's (ex: http(s)://example.example)</div>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="flex items-end mt-5">
-                    @if ($upload !== null)
-                        {{-- Errors --}}
-                        @if ($errors->any())
-                            @if (!($errors->has('upload_link.*') || $errors->has('upload_file.*')))
-                                <p class="text-red-500 font-semibold mr-auto inline-block">{{ $errors->first() }}</p>
-                            @endif
-                        @endif
-                        @if (session('success_upload'))
-                            <p class="text-green-500 font-semibold mr-auto inline-block">{{ session('success_upload') }}</p>
-                        @endif
-                        @if (session('success_delete'))
-                            <p class="text-green-500 font-semibold mr-auto inline-block">{{ session('success_delete') }}</p>
-                        @endif
-                    @endif
                     <button
                         class="transition ease-in-out duration-200 inline-block ml-auto border border-orange-700 bg-orange-300 font-semibold text-orange-700 p-2 px-5 rounded-md cursor-pointer hover:bg-orange-400"
                         type="submit">Upload</button>
