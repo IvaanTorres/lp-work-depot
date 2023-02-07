@@ -47,10 +47,10 @@
     }
   </style>
 
-  @if (session('user_project_update_mark_info'))
+  @if (session('user_update_mark_info'))
     <div class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
       <strong class="font-bold">Success!</strong>
-      <span class="block sm:inline">{{session('user_project_update_mark_info')}}</span>
+      <span class="block sm:inline">{{session('user_update_mark_info')}}</span>
     </div>
   @endif
 
@@ -118,7 +118,7 @@
         <hr class="border-b-2 mb-5">
 
         <div class="bg-gray-100 p-3 border border-gray-800">
-          @forelse ($user->uploads->where('project_id', $project->id) as $upload)
+          @if ($upload != null)
             <div class="mb-5">
               <h4 class="font-semibold text-md">Files</h4>
               <div class="grid grid-cols-4 gap-3 mt-3">
@@ -162,9 +162,9 @@
                 @endforelse
               </div>
             </div>
-          @empty
+          @else
             <p>There's no upload content</p>
-          @endforelse
+          @endif
         </div>
       </div>
     </div>

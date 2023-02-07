@@ -57,11 +57,13 @@ class ProjectController extends Controller
     public function getUserDetails($course_id, $lesson_id, $project_id, $user_id){
         $user = User::findOrFail($user_id);
         $project = Project::findOrFail($project_id);
+        $upload = $project->uploads()->where('user_id', $user_id)->first();
         
         return view('projects.user-details', [
             'course_id' => $course_id,
             'lesson_id' => $lesson_id,
             'project' => $project,
+            'upload' => $upload,
             'user' => $user,
         ]);
     }
@@ -84,7 +86,7 @@ class ProjectController extends Controller
             $mark->project()->associate($project_id);
             $mark->save();
         }
-        return back()->with('user_project_update_mark_info', 'Mark updated successfully');
+        return back()->with('user_update_mark_info', 'Mark updated successfully');
     }
 
     /* ---------------------------------- CRUD ---------------------------------- */
